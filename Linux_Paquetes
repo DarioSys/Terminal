@@ -1,0 +1,210 @@
+﻿
+
+# Desktop Gnome
+
+Servidor Gráfico                        xorg | wayland
+Gestor de escritorio                    gnome-core
+Display Manager                         gdm3
+Panel                                   #Incluido en gnome-core
+Menú                                    #Incluido en gnome-core
+Gestor de ventanas                      mutter
+Gestor de sesiones                      gnome-session
+Gestor de control                       gnome-control-center  gnome-tweaks 
+Gestor de archivos                      nautilus                     
+Gestor de Energia                       gnome-power-manager
+Gestor de disco                         gnome-disk-utility 
+Monitor del sistema                     gnome-system-monitor
+Emulador de Terminal                    gnome-terminal
+Interfaz gráfica de red                 network-manager-gnome
+Captura de Pantalla                     gnome-screenshot 
+Editor de texto                         gedit
+Visor de Imágenes                       eog                                                       
+Visor de PDF                            evince
+
+
+# Desktop Kde plasma 
+
+Servidor Gráfico                        xorg | wayland
+Gestor de escritorio                    plasma-desktop
+Display Manager                         sddm
+Panel                                   #Incluido en plasma-desktop
+Menú                                    #Incluido en plasma-desktop
+Gestor de ventanas                      kwin #Incluido en plasma-desktop
+Gestor de sesiones                   
+Gestor de control                       systemsettings
+Gestor de archivos                      dolphin               
+Gestor de Energía                     
+Gestor de disco                         plasma-disks
+Monitor del sistema                     plasma-systemmonitor
+Emulador de Terminal                    konsole                 
+Interfaz gráfica de red              
+Captura de Pantalla                     kde-spectacle 
+Editor de texto                         kate
+Visor de Imágenes                       gwenview
+Visor de PDF                            okular
+
+
+# Desktop Cinnamon
+
+Servidor Gráfico                        xorg | wayland
+Gestor de escritorio                    cinnamon-core
+Display Manager                         lightdm
+Panel                                        
+Menú                                          
+Gestor de ventanas                      muffin
+Gestor de sesiones                      cinnamon-session 
+Gestor de control                       cinnamon-control-center           
+Gestor de archivos                      nemo              
+Gestor de Energía                       cinnamon-settings-daemon
+Gestor de disco                         gnome-disk-utility
+Monitor del sistema                     gnome-system-monitor
+Emulador de Terminal                    gnome-terminal
+Interfaz gráfica de red                 network-manager-gnome
+Captura de Pantalla                     gnome-screenshot 
+Editor de texto                         gedit
+Visor de Imágenes                       eog 
+Visor de PDF                            evince
+
+
+# Desktop Mate
+
+Servidor Gráfico                        xorg | wayland
+Gestor de escritorio                    mate-core
+Display Manager                         lightdm                              x
+Panel                                   mate-panel                              
+Menú                                    mate-applet-brisk-menu  mate-menu    x
+Gestor de ventanas                      marco                                       
+Gestor de sesiones                      mate-session-manager            
+Gestor de control                       mate-control-center  mate-tweak 
+Gestor de archivos                      caja                                          
+Gestor de Energia                       mate-power-manager               x
+Gestor de disco                         gnome-disk-utility 
+Monitor del sistema                     mate-system-monitor
+Emulador de Terminal                    mate-terminal                 
+Interfaz gráfica de red                 network-manager-gnome  
+Control volumen                         mate-media    
+Captura de Pantalla                     mate-utils 
+Editor de texto                         pluma
+Visor de Imágenes                       eom
+Visor de PDF                            atril                                            
+
+# Desktop Xfce4
+
+Servidor Gráfico                        xorg | wayland
+Gestor de escritorio                    xfdesktop4
+Display Manager                         lightdm
+Panel                                   xfce4-panel  
+Menú                                    xfce4-whiskermenu-plugin 
+Gestor de ventanas                      xfwm4
+Gestor de sesiones                      xfce4-session
+Gestor de control                       xfce4-settings
+Gestor de archivos                      thunar                       
+Gestor de Energia                       xfce4-power-manager
+Gestor de disco                         gnome-disk-utility 
+Monitor del sistema                     xfce4-taskmanager
+Emulador de Terminal                    xfce4-terminal          
+Interfaz gráfica de red                 network-manager-gnome
+Captura de Pantalla                     xfce4-screenshooter
+
+Centro de Notificaciones                xfce4-notifyd                                               
+Cambiar Imagen Session                  mugshot 
+Plugin de Pulseaudio                    xfce4-pulseaudio-plugin
+Editor de texto                         mousepad  
+Visor de Imágenes                       ristretto
+Visor de PDF                            atril 
+
+# Desktop LXDE
+
+Servidor Gráfico                        xorg | wayland
+Gestor de escritorio                    
+lxde-core
+Display Manager                         lightdm lxdm
+Panel                                   lxpanel
+Menú                                           
+Gestor de ventanas                    
+Gestor de sesiones                      lxsession-edit lxsession
+Gestor de control                      
+Gestor de archivos                      pcmanfm               
+Gestor de Energia                      
+Gestor de disco                        
+Monitor del sistema                     lxtask
+Emulador de Terminal                    lxterminal      
+Interfaz gráfica de red                 nm-tray
+Captura de Pantalla                  
+Editor de texto                         mousepad  
+Visor de Imágenes                       gpicview
+Visor de PDF                            atril 
+
+Gestor de mouse y teclado               lxinput
+Administrador de resolucion pantallas   lxrandr
+
+
+# Gestor i3
+
+Servidor Gráfico                        xorg
+Display Manager                         lightdm                                     
+Panel                                   i3status                             
+Menú                                    rofi               
+Gestor de ventanas                      i3                                    
+Gestor de archivos                      thunar                                     
+Gestor de Energia                       xfce4-power-manager          
+Emulador de Terminal                    sakura   
+Captura de Pantalla                     xfce4-screenshooter                      
+Bloqueador de pantallas                 light-locker
+Theme gestor de archivos                lxappearance 
+Autenticación                           policykit-1-gnome
+Compositor Transparencia                picom      
+Visor de Imágenes                       ristretto
+Visor de PDF                            atril 
+
+
+# Aplicaciones Necesarias para el sistema
+
+
+Sudoers                                 sudo
+Firewall                                ufw
+Herramienta Ping                        iputils-ping 
+Herramienta ifconfig netstat            net-tools 
+Heraramienta nmcli                      network-manager                                                                     
+Herramientas  iw iwconfig iwlist        wireless-tools 
+Servidor de Audio                       pulseaudio
+Interfaz gráfica de Audio               pavucontrol 
+Árbol de directorios                    tree
+Info del sistema                        neofetch
+Administrador de procesos               htop  
+Gestor de paquetes                      synaptic
+Paquetes de compilación                 build-essential 
+Soporte filesystem NTFS                 ntfs-3g
+System file virtual                     gvfs-backends 
+Montar los VFS                          gvfs-fuse
+Teclado numérico                        numlockx
+Fuentes chinas                          fonts-arphic-uming
+Fuentes japonesas                       fonts-ipafont-mincho
+Fuentes coreanas                        fonts-unfonts-core 
+Tema Papirus iconos                     papirus-icon-theme
+Tema para cursores                      dmz-cursor-theme
+
+# Aplicaciones secundarias
+
+Suite Ofimática                         libreoffice 
+Temas de Office                         libreoffice-gtk3 
+Navegador                               firefox-esr
+Reproductor                             vlc 
+WebCam                                  cheese
+Scanner                                 simple-scan
+
+
+# Paquetes que aún me faltan chequear
+
+mtp-tools               
+hplip                   # Driver hp para scaner o impresora
+
+
+rsyslog                 # para los logs del sistema
+ethool                  # para el adaptador ethernet
+
+
+
+
+
+
