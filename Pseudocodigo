@@ -1,0 +1,254 @@
+﻿LOGICA DE PROGRAMACION EN PSEUDOCODIGO 
+--------------------------------------------------------------------------------------------
+1) VARIABLES
+
+DECLARAR O DEFINIR     	        Puede tener palabras reservadas, pueden ser locales o globales.
+VAR                 	        Asignamos un nombre.
+TIPO DE DATO            	Integer, Float, Double, String, Character, Boolean
+VALOR                   	Asignamos el valor de la variable, si el valor es 0 se lo dice "inicializar" una variable (Contadores)
+
+Define VAR As Integer <- 0
+
+IMPRIMIMOS
+
+WRITE VAR
+
+----------------------------------------------------------------------------------------------
+2) OPERADORES
+
+ARITMETICOS
+
+SUMA          	 +
+RESTA         	 -
+MULTIPLICACION	 *
+DIVISION      	 /
+POTENCIA      	 **
+RAIZ         	 sqrt()
+MODULO O RESTO	 %
+
+RELACIONALES
+
+Igualdad      	==
+Identidad  	===
+Distino    	!=    <>
+Mayor      	>
+Menor      	<
+Mayor igual	>=
+Menor igual	<=
+
+LOGICOS
+
+AND   
+OR    
+NOT
+
+ASIGNACION
+
+VARIABLE  =  <-
+VARIABLE +=
+VARIABLE -=
+VARIABLE *=
+VARIABLE /=
+
+INCREMENTO Y DECREMENTO
+
+VARIABLE++            	Incrementa de a uno.
+VARIABLE--            	Incrementa de a uno.
+++VARIABLE            	Incrementa de a uno antes de ser usada
+--VARIABLE            	Decrementa de a uno antes de ser usada.
+
+TERNARIOS
+
+CONCATENACION 
+
+, Para concatenar elemenos con distintos tipos de datos 
++ Para concatenar elementos con mismo tipo de datos
+
+
+INGRESAR DATO POR TECLADO EN VARIABLE
+
+WRITE "Ingrese un tipo de dato: "
+READ variable
+
+IMPRIMIR VARIABLE 
+
+WRITE variable
+
+
+------------------------------------------------------------------------------------------------------------
+
+3) ESTRUCTURAS DE CONTROL
+
+CONDICIONALES
+
+SIMPLES - IF
+
+IF (Condition) THEN
+    Instructions
+ENDIF
+
+DOBLES - IF-ELSE
+
+IF (Condition) THEN
+    Instructions
+ELSE
+    Instructions
+ENDIF
+
+MULTIPLES - IF-ELSEIF
+
+IF (Condition) THEN
+    Instructions
+ELSEIF (Condition) THEN
+    Instructions
+ELSE
+    Instructions
+ENDIF
+ 
+MULTIPLES - SELECT CASE
+
+SELECT CASE VAR
+    CASE VAR1:
+        Instructions
+    CASE VAR2:
+        Instructions
+    DEFAULT:
+        Instructions
+ENDSELECT
+
+
+ITERATIVOS - LOOPS , BUCLES
+
+
+---FOR
+
+FOR i IN List DO
+    WRITE i Instructions    
+ENDFOR
+
+FOR i FROM Start TO End STEP N DO
+    WRITE i Instructions    
+ENDFOR
+
+-------------------------------------------------------------
+
+--WHILE CON CONTADOR
+
+i <- 0
+WHILE (i <= N) DO
+      WRITE i Instructions
+      i<- i + 1
+ENDWHILE
+
+-- WHILE SIN CONTADOR
+
+A is equal to B
+
+WHILE (A = B) DO
+    Instructions
+    A <- Get next value of A that is not equal to B
+ENDWHILE
+
+-- DO WHILE CON CONTADOR
+
+i <- 0
+DO 
+   WRITE i Instructions
+   i<- i + 1
+WHILE (i <= N)
+
+-- DO WHILE SIN CONTADOR
+
+A is equal to B
+DO
+    Instructions
+    A <- Get next value of A that is not equal to B
+WHILE (A = B)
+
+------------------------------------------------------
+
+--UNTIL CON CONTADOR
+
+i <- 0
+UNTIL (i >= N) DO
+      WRITE i Instructions
+      i<- i + 1
+ENDUNTIL
+
+
+-- UNTIL SIN CONTADOR
+
+A is not equal to B
+
+UNTIL (A = B) DO
+    Instructions
+    A <- Get next value of A that is equal to B
+ENDUNTIL
+
+-- DO UNTIL CON CONTADOR
+
+i <- 0
+DO 
+   WRITE i Instructions
+   i<- i + 1
+UNTIL (i >= N)
+
+-- DO UNTIL SIN CONTADOR
+
+A is not equal to B
+DO
+    Instructions
+    A <- Get next value of A that is  equal to B
+UNTIL (A = B)
+
+-------------------------------------------------------
+
+4) FUNCIONES
+
+FUNCTION Name(PARAMETERS) 
+	Instructions
+ENDFUNTION
+
+Name(ARGUMENTS)
+
+
+
+FUNCTION Name(PARAMETERS) 
+	Result <- Instructions
+	RETURN Result
+ENDFUNTION
+
+Variable <- Name(ARGUMENTS)
+WRITE Variable
+ 
+--------------------------------------------------------
+
+ARRAYS
+
+DEFINE ARRAY, i AS INTEGER
+
+DIM ARRAY[N]
+
+ARRAY[0] <- N
+ARRAY[1] <- N
+ARRAY[2] <- N
+ARRAY[3] <- N
+
+WRITE ARRAY[1]
+
+i <- N
+Variable <- ARRAY[i]
+WRITE Variable
+
+-----------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
