@@ -1,0 +1,134 @@
+# Instalar QEMU/KVM 
+
+sudo apt install qemu-system virt-viewer
+
+qemu-img create -f qcow2  /path/hdd.qcow2 <size>G  # Crear un disco virtual, tamaño en gigabites
+qemu-img info hdd.qcow2  # Verificar informacion del disco virtual
+
+
+qemu-system-x86_64 --enable-kvm -vga virtio -display spice-app -name 'maquina' -m 2G -smp 2 -hda /path/hdd.qcow2 -boot d -cdrom /path/image.iso
+qemu-system-x86_64 --enable-kvm -vga virtio -display gtk,gl=on -name 'maquina' -m 2G -smp 2 -hda /path/hdd.qcow2 -boot d -cdrom /path/image.iso
+
+-name machine
+--enable-kvm
+-m 2G 
+-smp 2
+-machine type=q35                                      # Tipo de motherboard moderno soporta SATA
+-hda /path/hdd.qcow2 \
+-driver file=path/hdd.qcow2,                           # Es un nuevo controlador remplaza a hda que solo soporta IDE
+index=0,                                               # Indicia primer disco                                  
+media=disk,                                            # Indica la media es de tipo disco duro
+if=ide                                                 # Driver disco para windows ide
+if=virtio                                              # Driver disco para linux
+-driver file=path/img.iso,index=1,media=cdrom          # Driver tipo cdrom para bootear la imagen
+-boot d
+-cdrom /path/image.iso
+-net nic                                               # Red
+-net bridge,br0                                        # Red modo puete, por la interfaz br0
+-display spice-app                                     # Servidor grafico spice
+-vga qxl                                               # Tarjeta grafica permite el protocolo spice
+-vga std                                               # Tarjeta grafica standar
+-vga virtio                                            # Tarjeta grafica virtio  
+-device ac97                                           # Dispositivo de audio                                            
+-spice port=5930,disable-ticketing=on                  # Uso del protocolo de video spice
+-daemonize                                             # Convierte en un servicio en segundo plano.
+
+
+echo "allow br0" > /etc/qemu/bridge.conf
+
+
+qemu-system-x86_64 \
+--enable-kvm \
+-vga virtio \
+-display spice-app \
+-name machine \
+-m 2G -smp 2 \
+-hda /path/hdd.qcow2 \
+-boot d \
+-cdrom /path/image.iso \
+-daemonize
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+sudo apt install qemu-system libvirt-clients libvirt-daemon-system bridge-utils virtinst virt-manager cpu-checker
+kvm-ok
+
+qemu-system                # Herramienta qemu 
+libvirt-clients            # Gestor de maquinas virtuales virsh
+libvirt-daemon-system      # Servicio de virsh
+bridge-utils               # Paquetes de apadaptador puente
+virtinst                   # Herramienta para crear VM por CLI (virt-install)
+virt-manager               # Herramienta para crear VM por GUI (virt-manager)
+
+sudo systemctl status libvirtd.service
+sudo systemctl enable libvirtd.service
+sudo systemctl start libvirtd.service
+
+sudo adduser $USER libvirt
+sudo adduser $USER libvirt-qemu
+
+sudo virsh net-list --all
+sudo virsh net-start default
+sudo virsh net-autostart default
+
+sudo virsh list --all
+sudo virsh start vm
+sudo virsh shutdown vm
+sudo virt-viewer vm
+sudo virsh 
+
+
+# Crear un adaptador vitual br0 modo puente
+
+nmcli con add ifname br0 type bridge con-name br0
+nmcli con add type bridge-slave ifname [adp] master br0
+nmcli con show
+nmcli con modify br0 bridge.stp no
+nmcli con show
+
+
+nmcli con down [red wifi activa]
+nmcli con up br0
+nmcli con show
+
+
+nano /tmp/br0.xml
+<network>
+<name>Puente</name>
+<forward mode="bridge"/>
+<bridge name="br0"/>
+</network>
+
+virsh net-define /tmp/br0.xml
+virsh net-start Puente
+virsh net-autostart Puente
+virsh net-list --all
+
+# Crear una maquina virtual
+   virt-install \
+   --connect qemu:///system \
+   --virt-type kvm \
+   --name my-machine \
+   --vcpus 2 \
+   --memory 2048 \
+   --disk path=/path/hdd.qcow2,format=qcow2,bus=virtio,size=30 \
+   --cdrom /path/to/image/image.iso \
+   --network network=default|bridge:br0 \
+   --os-variant debian11
+   
+# Importar la maquina virtual creada anteriormente 
+   virt-install \
+   --connect qemu:///system \
+   --virt-type kvm \
+   --name my-machine \
+   --vcpus 2 \
+   --memory 2048 \
+   --disk path=/path/hdd.qcow2,format=qcow2,bus=virtio,size=30 \
+   --network network=default|bridge:br0 \
+   --os-variant debian11 \
+   --import
+
+
