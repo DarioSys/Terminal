@@ -1,0 +1,845 @@
+# 21/07/2023 - 03/01/2025
+
+# ARCHIVOS Y DIRECTORIOS
+
+# Directorios
+
+pwd                        # Muestra donde estamos ubicado mostrando la ruta absoluta
+
+cd                         # Nos permite navegar entre directorios
+
+cd ..                      # Nos permite ir a un directorio anterior.    
+
+ls  [option][path]         # Lista directorios
+
+-l  # Muestra los permisos
+-h  # Muestra en lenguaje humano
+-a  # Muestra archivos y directorios ocultos
+-S  # Muestra el tamaño
+
+clear                       # Limpia la pantalla  
+   
+tree [option][path]         # Muestra un árbol del directorio.
+-a                          # Muestra los archivos y directorios ocultos
+
+mkdir [option][path]        # Crea directorios.
+
+
+# Archivos
+
+
+file <file>                          # Muestra el tipo de archivo
+
+touch <file>                         # Crea un archivo de texto
+
+cp <file> <file2>                    # Creo una copia del archivo1 y lo nombro archivo2
+
+cp [option] <path-src> <path-dst> # Copia Archivos y directorios
+
+-i # Pide confirmación antes de copiar.
+-r # Copia de forma recursiva incluyendo directorios vacíos.
+
+rsync [option] <path-src> <path-dst> # Hace copias y backups
+
+-arzhvPn --delete --exclude=dir1
+
+-a # Conserva los atributos del archivo
+-r # Copia de forma recursiva
+-z # Comprime a medida que copia para que sea mas rapido
+-h # Para ver de forma humana mas legible
+-v # Verbose, para que me muestre informacion por consola
+-P # Para mostrar una barra de progreso a medida que copia
+-n # Para mostrar la acción antes de copiar
+-- delete      # Para borrar archivos que sean repetidos
+--exclude=dir1 # Por si no quiero incluir un directorio
+
+mv [option] <path-src> <path-dst> # Renombra y mueve directorios
+
+-i # Pide confirmación si hay archivos existentes
+
+mv <file1> <file2>        # Renombra un archivo
+
+rmdir [option] <dir>      # Elimina directorios
+
+rm [option] [path]<file>  # Elimina archivos y directorios
+
+-i # Pide confirmación antes de eliminar
+-r # Elimina de forma recursiva
+-f # Fuerza la eliminación de solo lectura y evita las advertencias
+
+ln [option] <path-src> <path-dst> <namelink>
+
+-s # Crea enlace simbólico 
+-r # Crea enlaces simbólicos relativos a la ubicación del enlace
+
+
+# Buscar Archivos
+
+
+find <path> [option] 
+
+-name '*file*'     # Nombre del archivo a buscar
+-print             # Buscar todos los archivos con ese nombre
+
+which   <binary>   # Muestra la ruta donde se encuentra el binario
+
+whereis <binary>   # Muestra todas las ruta donde se encuentra el binario y su manual.
+
+
+# Manipulación de texto
+
+
+# Lectura de texto
+
+cat  [option] <file>   # Muestra el contenido de archivos de texto
+
+tac  [option] <file>   # Muestra el contenido de archivos de texto en reverso
+
+nl   [option] <file>   # Muestra el contenido de archivos de texto con números de linea
+
+more [option] <file>   # Muestra el contenido en forma de página
+
+less [option] <file>   # Muestra el contenido en forma de página
+
+
+# Filtracion de textos
+
+
+head [option] <file>   # Muestra las 10 primeras líneas
+
+-n                     # Muestra el numero de lineas
+
+tail [option] <file>   # Muestra las 10 últimas líneas
+
+-f                     # Muestra en tiempo real las líneas de un evento
+-n                     # Muestra el numero de lineas
+
+sort [option] <file>   # Filtra ASC | DESC el contenido de un archivo
+
+grep [option] <expresión> <file> # Permite filtrar por el texto que buscamos
+
+-i                     # Busca 'expresión' en el archivo, ignorando mayúsculas y minúsculas
+
+grep -i 'HoLa' file.txt 
+
+sed [option] <expresión> <file>    # Permite remplazar una expresion por otra
+
+-i                                 # Introduce el reemplazo en el archivo
+
+sed ‘s/texto/texto2/’ file.txt     # Remplaza texto por texto2 en la salida de la consola
+
+sed -i ‘s/texto/texto2/’ file.txt  # Remplaza texto por texto2 en el archivo archivo
+
+wc -l [option] <file>              # Cuenta la cantidad de lineas que tiene 
+
+xargs [option] <file>              #
+
+awk '{print $0}' datos.txt                            # Imprime todo el contenido
+
+awk '{print $1, $3}' datos.txt                        # Imprime las columnas 1 y 3
+
+awk '{print "campos:" NF, $0}' datos.txt              # Imprime la cantidad de campos
+
+awk '{print "Lineas:" NR, $0}' datos.txt              # Imprime la cantidad de lineas
+
+awk '{FS=" "} {print $1, $2 }' datos.txt              # Delimitador de campo
+
+awk -F, '{print $1, $2}' datos.txt
+
+awk -F “,”  ‘{print $1, $2 }' datos.txt 
+
+awk '{RS="\n"} {print $1, $2 }' datos.txt            # Delimitador de linea
+
+awk '{OFS=" "} {print $1, $2}' datos.txt             # Delimitador de salida de campo
+
+awk '{ORS="\n\"} {print $1, $2}' datos.txt           # Delimitador de salida de linea
+
+
+
+<command out> |  {grep | sort | sed | wc | awk} <expresión> # Busca la expresion
+
+ls -lh | grep 'programas.txt'
+
+
+
+# stdin :0 stdout :1 stderr:2  /dev/null
+
+cat existe.txt   1> stdout.txt
+cat noexiste.txt 2> stderr.txt
+
+cat existe.txt   1> /dev/null
+cat existe.txt   2> /dev/null
+
+
+
+echo <texto> > <file>            # Crea un archivo de texto plano con texto.
+echo <texto> >> <file>           # Añade texto al final del archivo sin sobrescribirlo
+
+
+# DISCOS Y PARTICIONES
+
+
+# Particiones y bloques
+
+lsblk                        # Ver los discos y punto de montaje
+
+blkid                        # Me da información UUID del dispositivo.
+
+fdisk [option] [device]
+-l                           # Ver los discos que están en el dispositivo.
+
+parted [option] [device]
+-l                           # Ver los discos que están en el dispositivo.
+
+# Espacio en disco
+
+df [option]                  # Muestra las unidades y el espacio libre
+-h            
+-T
+
+du [option] [path]           # Muestra el espacio ocupado
+-h                        
+-c
+
+# Montar 
+
+mount [option] [device] [path]
+
+-a                     # Montar todo
+-t                     # Tipo de disco
+
+mount /dev/sdb /mnt/dir              # Montar un disco sbd 
+
+mount -t ntfs /dev/sdb /mnt/dir      # Montar un disco ntfs 
+
+mount -t vfat /dev/sdb /mnt/dir      # Montar un disco fat32 
+
+mount -t cifs //IP/D$ /mnt/dir -o username=user,password=hola123 ,noperm # Montar un disco en red temp
+
+nano /etc/fstab                      # Archivo utilizado para montar discos permamentemente
+
+UUID=53FB3F3B53A12FD4 /media/unidad ntfs defaults 0 0       # Montar una unidad
+
+//IP/D$ /mnt/dir cifs username=user,password=hola123  0 0   # Montar un unidad en red
+
+# Desmontar
+
+umount [option] [device] [path]
+
+-a                      # Desmontar todo
+-f                      # Forzar 
+
+# Formatear unidades
+
+mkfs.vfat <device> 
+mkfs.ntfs <device> 
+mkfs.ext4 <device> 
+
+mkfs.ntfs /dev/sdb
+
+# Poner etiquetas a las unidades
+
+fatlabel  <device> <etiqueta> 
+e2label   <device> <etiqueta> 
+ntfslabel <device> <etiqueta> 
+
+ntfslabel /dev/sdb1 disco1
+
+# Extraer de forma segura
+
+eject <device>  # Antes de extraer se debe desmontar la unidad.
+
+eject /dev/sdx
+
+# COMPRESORES
+
+tar [option] <file.tar.gz>
+-c  # Crear, comprimir
+-v  # Verbose
+-x  # Extraer
+-t  # Listar
+-f                                                    
+-z  # gzip
+-j  # bzip2
+-J  # xz
+
+tar -zxvf archivo.tar.gz Descomprimir
+
+tar -czvf archivo.tar.gz Comprimir
+
+# ADMINISTRACION DE PAQUETES
+
+# Debian
+
+sudo apt update           	  # Actualiza la lista de paquetes disponibles
+sudo apt upgrade         	  # Descarga e instala lista de paquetes disponibles
+sudo apt install <package>    # Instala el paquete
+sudo apt remove  <package>    # Elimina el paquete sin archivos de configuración
+sudo apt purge   <package>    # Elimina el paquete con archivos de configuración
+sudo apt autoremove           # Elimina paquetes y dependencias innecesarias
+sudo apt autoclean       	  # 
+sudo apt clean           	  # Elimina todos los paquetes de caché descargados
+sudo apt search  <package>	  # Busca un paquete específico
+sudo apt list                     # Lista todos los paquetes instalados
+sudo dpkg -l              	  # Lista todos los paquetes instalados utilizando dpkg
+sudo apt show                 # Muestra las dependencias del paquete
+
+# Arch Linux
+
+sudo pacman -Sy               # Actualiza la lista de paquetes disponibles.
+sudo pacman -Syu              # Descarga e instala lista de paquetes disponibles.
+sudo pacman -S  <paquete>     # Instala el paquete sin sus dependencias
+sudo pacman -R  <paquete>     # Elimina el paquete 
+sudo pacman -Rs <paquete>     # Elimina el paquete con sus dependecias
+
+# Fedora
+
+sudo dnf update          	  # Actualiza todos los paquetes disponibles
+sudo dnf upgrade         	  # Descarga e instala lista de paquetes disponibles
+sudo dnf install <package>    # Instala el paquete 
+sudo dnf remove  <package>    # Elimina el paquete 
+sudo dnf autoremove           # Elimina paquetes y dependencias innecesarias
+sudo dnf search  <paquete>    # Busca un paquete específico
+sudo dnf list all
+sudo dnf list installed
+
+
+# Void Linux
+
+# Gentoo
+
+# OpenSUSE
+
+# RedHat
+
+
+# USUARIOS
+
+# Cambiar usuario
+
+whoami      # Muestra el usuario
+
+su          # Cambia al usuario root
+
+su -        # Cambia al usuario root
+
+su root     # Cambia al usuario root
+
+sudo -i     # Cambia al usuario root
+
+su <user>   # Cambia a otro usuario
+
+sudo <command> # Ejecuta con privilegios de administrador
+
+visudo         # Edita el archivo /etc/sudoers 
+
+# Usuarios del sistema
+
+useradd [option] <user>  # Crear un usuario, si no tiene parametros no crea un directorio
+-m                       # Crea un usuario en el directorio home
+-d                       # Especificar una ruta /home/user
+-s                       # Ejecuta con shell /bin/bash user
+
+
+userdel [option] <user>  # Elimina un usuario sin sus archivos
+-r                       # Elimina un usuario con sus archivos
+
+adduser  <user>          # Crear un usuario
+
+passwd   <user>          # Agregar clave al usuario
+
+usermod -aG sudo <user>  # Añadir un usuario con permisos privilegiados
+
+usermod -aG <app> <user> # Añadir una aplicacion al usuario con privilegios
+
+usermod -aG docker $USER
+
+newgrp <app>             # Crear cambia los permisos de grupo de trabajo
+
+newgrp docker
+
+# Grupos
+
+adduser  <user> <group> # Agregar un usuario a un grupo
+
+groupadd <group>        # Crea un grupo
+
+groupdel  <group>       # Elimina un grupo
+
+addgroup <group>        # Crea un grupo
+
+delgroup <group>        # Elimina un grupo
+
+groups  [user]          # Muestra a que grupo pertenece un usuario
+
+cat  /etc /passwd        # Ver los usuarios
+
+cat  /etc/group          # Ver los grupos
+
+# Usuarios logeados
+
+w       # Muestra usuarios conectados y su actividad.
+
+who     # Muestra los usuarios conectados y su hora de inicio.
+
+users   # Muestra solo los nombres de usuarios conectados.
+
+last    # Muestra el historial de inicios de sesión.
+
+lastb   # Muestra intentos fallidos de inicio de sesión.
+
+
+# Permisos
+
+
+chgrp [option] <group> <path>          # Cambia los permisos de grupos a un archivo o directorio
+
+chown [option] <user>:<group> [path]   # Dar permisos al usuario user y grupo de forma recursiva
+-R                                     # Aplica de forma recursiva
+
+chmod [signo] [Letra] <file>           # Modifica los atributos de archivos y directorios
+
++   # Establece un atributo.  
+-   # Borra un atributo.
+
+r   # Permisos de lectura      chmod +r script.sh       chmod 400 script.sh
+w   # Permisos de escritura    chmod +w script.sh       chmod 200 script.sh
+x   # Permisos de ejecución    chmod +x script.sh       chmod 100 script.sh
+
+- - -       0     000                  
+- - x       1     001
+- w -       2     010
+- wx        3     011
+r - -       4     100
+r - x       5     101
+rw -        6     110
+r x w       7     111
+
+4 permisos de r      
+2 permisos de w
+1 permisos de x
+
+Todos los permisos (4+2+1) => (rwx) = 7
+
+
+# TIEMPO
+
+date [option]                      # Muestra la fecha del sistema
+
+date -s AAAA-MM-DD HH:MM:SS        # Para modificar la fecha y hora.
+
+cal 
+
+timeout
+
+time 
+
+uptime
+
+sleep
+
+watch
+
+cron 
+
+crontab
+
+# CONTROL DE SESIONES Y TERMINAL
+
+# Terminal
+
+clear                        # Limpia la pantalla
+
+history                      # Muestra el historial de comandos
+
+reset                        # Reinicia la termninal
+
+exit                         # Sale de la terminal
+
+logout                       # Cierra una sesion
+
+# Reinicio y Apagado
+
+shutdown [option]            # Apagado y reinicio del equipo
+
+-r now                       # Reinicia el equipo 
+-h now                       # Apaga el equipo 
+-h +1                        # Apaga el equipo en 1 min 
+-r +1                        # Reinicia el equipo en 1 min 
+-h 00:00                     # Pone un tiempo
+-c                           # Anula el apagado y el reinicio
+
+
+poweroff                     # Apaga el equipo                                               
+reboot                       # Reinicia el equipo 
+
+init 0                       # Apaga el equipo
+init 6                       # Reinicia el equipo
+
+
+telint 0                     # Apaga el equipo
+halt -p                      # Apaga el equipo
+sudo systemctl suspend       # Suspende el equipo
+
+
+# PROCESOS DEL SISTEMA
+
+# Visualizadores de procesos
+
+ps [opción]      # Muestra los procesos
+
+a                # Muestra todos los procesos
+u                # Muestra los usuarios que ejecutan los procesos
+x
+f
+
+ps auxf
+
+
+# Background y Foreground
+
+top              #
+
+htop             #
+
+Jobs             # Lista los procesos en segundo plano
+
+bg               # mueve un proceso en segundo plano, cuando presionan Ctrl + Z
+
+fg               # Mueve los procesos a foreground (Primer plano)
+
+
+# Mata procesos
+
+kill -9 <PID>              # Se pone el número del pid que desea matar
+
+pkill -9 <proceso>         # Para matar el proceso 
+por su nombre
+
+
+# Prioridad de procesos
+
+nice   <PID>
+
+renice <PID>
+
+
+# HARDWARE Y SISTEMA
+
+
+# Informacion del sistema
+
+hostname             # Muestra el nombre del host (pc)
+
+uname -a             # Muestra la versión 
+
+lsb_release -a       # Muestra la distribución de linux instalada.
+
+# Hardware memoria
+
+free [option]
+
+# Dispositivos 
+
+lspci [option]   # Me lista todos mis adaptadores pci
+
+-k               # Me muestra los drivers de los adaptadores
+
+lsusb [option]   # Me lista todos los adaptadores usb
+
+-t               # Me muestra los drivers de los adaptadores usb
+
+watch -d lsubs   # Me lista todos los dispositivos usb en tiempo real se se conectan o desconectan
+
+lscpu  [option]         # Me lista información de la cpu
+
+lshw   [option]         # Información del hardware
+
+lshw -html > info.html  # Información del hardware
+
+
+# Kernel y modulos
+
+lsmod                # Lista los modulos de los controladores del kernel.
+
+modinfo              # Muestra informacion sobre un modulo
+
+modprobe             # Carga o remueve modulos en el kernel
+
+insmod               # Inserta un modulo en el kernel
+
+rmmod                # Remueve un modulo del kernel
+
+dmesg [options]      # Para ver los logs del inicio del sistema o kernel.
+
+-C                   # Limpia los logs del kernel
+
+# SERVICIOS Y DEMONIOS
+
+/etc/init.d/*                      
+
+service  <service> {status | start |restart |reload |enable |disable}
+
+service --status-all   
+
+systemctl {status | start |restart |reload |enable |disable} <service>
+
+systemctl list-unit-files --type service --all  # Ver todos los servicios 
+
+systemctl list-units --type=service             # Lista todos los servicios y los que estan fallando
+
+journalctl                                      # Para ver los logs del inicio del sistema 
+
+lsoft -i :<port>                                # Identifica el servicio corriendo por el puerto
+
+
+# SEGURIDAD FIREWALL
+
+# Firewall ufw
+
+sudo ufw status                             # Permite ver el estado de los puertos
+sudo ufw reset                              # Resetea de fabrica
+sudo ufw enable                             # Habilita el firewall
+sudo ufw disable                            # Deshabilita el fireawall
+sudo ufw allow <puerto>                     # Abre un puerto
+sudo ufw delete allow <puerto>              # Elimina un puerto
+sudo ufw deny <puerto>                      # Deniega un puerto
+
+# Firewall iptables
+
+-A añadir regla
+-I Insertar una regla en una posición concreta
+-P Politica
+-Z Contadores (Para poner en cero)
+-D Eliminar una regla
+-t tabla 
+-p protocolo
+--sport puerto origen
+--dport puerto destino
+-s ip origen
+-d ip desitno
+-i interfaz entrada
+-o interfaz salida
+-j accion
+
+# Lista 
+
+iptables -L -nv --line-numbers  # Lista todas las reglas numericamente
+iptables -L INPUT -v -n         # Lista todas las reglas de entrada
+iptables -L OUTPUT -v -n        # Lista todas las reglas de salida
+iptables -S                     # Lista todas las reglas                
+
+# Eliminar reglas y contadores
+iptables -t filter -F  
+iptables -t nat -F     
+iptables -t filter -Z  
+iptables -t nat -Z     
+
+# Aceptar todas las reglas por defecto
+
+iptables -P INPUT ACCEPT        # Acepta todo el trafico entrante
+iptables -P OUTPUT ACCEPT       # Acepta todo el trafico saliente
+iptables -P FORWARD ACCEPT      # Acepta todo el reenvio de trafico a otro dispositivo
+
+# Denegar todas las reglas por defecto
+iptables -P INPUT DROP          # Bloquea todo el trafico entrante
+iptables -P OUTPUT DROP         # Bloquea todo el trafico saliente
+iptables -P FORWARD DROP        # Bloquea todo el reenvio de trafico a otro dispositivo
+
+
+# Regla en la cadena input y output para aceptar conexiones
+iptables -A INPUT  -i [interfaz] -p tcp --dport <port> -j ACCEPT
+iptables -A OUTPUT -o [interfaz] -p tcp --sport <port> -j ACCEPT
+
+# Para eliminar una regla
+iptables -D OUTPUT 1                 # Elimina la regla de id 1
+
+# CASO 1
+
+# Permitir el NAT para la red1 hacia la red red2
+iptables -t nat POSTROUTING -o [interfaz_1] -j MASQUERADE 
+
+# Permitir el tráfico entre red1 y red2
+iptables -t filter -A FORWARD -i [interfaz_1] -s [red1] -o [interfaz_2] -d [red2] -j ACCEPT
+
+# Redirigir el tráfico entrante al puerto 80 hacia cualquier dispositivo en la red2
+iptables -t nat PREROUTING -i [interfaz_1] -p tcp --dport 80 -j DNAT --to-destination [red2_ip]
+
+# Permitir el tráfico entrante en cualquier dispositivo de la red2 por el puerto 80
+iptables -t filter -A INPUT -p tcp -s [red2] --dport 80 -j ACCEPT
+
+# CASO 2
+
+# Permitir el NAT para red1 hacia la red red2
+iptables -t nat -A POSTROUTING -s [red1] -o [interfaz_1] -j SNAT --to-source [ip_publica]
+
+# Permitir el tráfico entre red1 y red2
+iptables -t filter -A FORWARD -i [interfaz_1] -s [red1] -o [interfaz_2] -d [red2] -j ACCEPT
+
+# Redirigir el tráfico entrante al puerto 80 hacia el servidor web en red2
+iptables -t nat PREROUTING -i [interfaz_1] -p tcp --dport 80 -j DNAT --to-destination [ip_servidor_web]
+
+# Permitir el tráfico entrante al servidor web por el puerto 80 desde red2
+iptables -t filter -A INPUT -p tcp -d [ip_servidor_web] --dport 80 -j ACCEPT
+
+
+
+# Permitir tráfico saliente en el rango de puertos efímeros
+iptables -A OUTPUT -p tcp --sport 1024:65535 -j ACCEPT
+
+# Permitir tráfico Relacionado y establecido
+iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+# Cuarda los cambios de la regla
+iptables-save | sudo tee /etc/iptables/rules.v4
+
+# Cuarda los cambios de la regla
+netfilter-persistent save
+
+# --------------------------------------------------------------------------------------
+
+# Habilitar interfaz loopback 
+iptables -I INPUT 1 -i lo -j ACCEPT
+iptables -I OUTPUT 1 -o lo -j ACCEPT
+
+# Habilitar ICMP
+iptables -A OUTPUT -o [interfaz] -p icmp -j ACCEPT 
+iptables -A INPUT -i  [interfaz] -p icmp -j ACCEPT 
+
+# Habilitar resolución DNS
+iptables -A OUTPUT -o [interfaz] -p udp --dport 53 -j ACCEPT
+iptables -A INPUT -i  [interfaz] -p udp --sport 53 -j ACCEPT
+
+iptables -A OUTPUT -o [interfaz] -p tcp --dport 53 -j ACCEPT
+iptables -A INPUT -i  [interfaz] -p tcp --sport 53 -j ACCEPT
+
+# Tráfico HTTP 
+iptables -A OUTPUT -o [interfaz] -p tcp --dport 80 -j ACCEPT
+iptables -A INPUT -i  [interfaz] -p tcp --sport 80 -j ACCEPT
+
+# Tráfico HTTPS 
+iptables -A OUTPUT -o [interfaz] -p tcp --dport 443 -j ACCEPT
+iptables -A INPUT -i  [interfaz] -p tcp --sport 443 -j ACCEPT
+
+# ----------------------------------------------------------------------------------------
+
+
+# REDES
+
+
+# DMS y Dominios
+
+ping -c 4 [ip]      # Verifico si hay conexión enviando 4 paquete icmp
+
+nslookup [ip]       # Consultar servidores de nombres de dominio (DNS)
+
+dig                 #
+
+whois               #
+
+# Trace
+
+traceroute [ip]     # Verídico las rutas de mi red cuantos saltos de ips da hasta llegar a mi host
+
+# Sockets
+
+netstat -natup      # Para ver las conexiones activas
+
+ss -ltuna           # Para ver las conexiones activas
+
+# Monitoreo
+
+iftop               #
+
+tcpdump             #
+
+# Interfaces 
+
+dhclient -r [adaptador]                                  # Libera y renueva la dirección IPv4 actualmente asignada por DHCP.
+
+ip addr                                                  # Ver las las conf de red , adaptadores ips, netmask
+
+ip link show                                             # lista todos los adaptadores
+
+ip route                                                 # Muestra la tabla de enrutamiento 
+
+ip addr add  [IP] [netmask] [broadcast] dev [adaptador]  # Añadir IP Netmask Broadcast
+
+ip route add default via [gateway]                       # Añadir puerta de enlace 
+
+ip addr flush dev [adaptador]                            # Elimina las configuraciones de red
+
+ip link set [adaptador]  {up | down}                     # Prender o apagar el adaptador
+
+ip link set [adaptador] {disable | enable}               # Deshabilita, habilita el adaptador
+
+
+ip tuntap add mode tun tun0                              # Crear un adaptador virtual
+
+ip add addr [IP] [netmask] dev tun0                      # Asignar una ip al adaptador virtual
+
+ip link set tun0 up                                      # Levantar el adaptador virtual
+
+
+ip link set tun0 down                                    # Apagar el adaptador virtual
+
+ip tuntap del dev tun0                                   # Eliminar el adaptador virtual
+
+
+route -n                                                 # Muestra la tabla de enrutamiento
+
+route add default gw [gateway]                           # Añadir puerta de enlace 
+
+
+
+ifconfig [adaptador] [IP] [netmask] [broadcast]          # Añadir IP Netmask Broadcast
+
+ifconfig [adaptador] {up | down}                         # Prender o apagar el adaptador
+
+ifconfig [adaptador] {disable | enable}                  # Deshabilita, habilita el adaptador
+
+
+nmcli device                                             # Muestra todos los adaptadores 
+
+nmcli device show                                        # Muestra todos los adaptadores
+
+nmcli device wifi                                        # Escanea mis redes wifi
+
+nmcli device wifi list                                   # Escanea mis redes wifi
+
+nmcli device wifi connect <RED> password [CLAVE]         # Conecta a una red
+
+nmcli device disconnect  [adaptador]                     # Desconecta de la red
+
+nmcli device {up | down} [adaptador]                     # Prender o apagar el adaptador
+
+nmcli device {disable | enable} [adaptador]              # Deshabilita, Deshabilita el adaptador
+
+nmcli device {disconnect | connect}  [adaptador]         # Conecta o desconecta el adaptador con 
+
+seguridad.
+
+
+
+iwconfig                                                 # Muestra mis adaptadores inalámbricos y también configura la red
+
+iwconfig [adaptador] essid <RED> key s:[CLAVE]           # Conecta a una red, No sirve para wpa2 solo wep
+
+iwconfig [adaptador] essid off                           # Desconecta a una red
+
+
+iwlist [adaptador]  scan | grep ESSID                    # Escanea mis redes wifi
+
+iwlist scan | grep ESSID                                 # Escanea mis redes wifi
+
+iwconfig  [adaptador] txpower {on | off}                 # Prender o apagar el adaptador
+
+       	                                                
+# Agregar a la variable PATH una ruta
+
+export PATH=$PATH:
+
+nano ~/.bashrc
+
+source ~/.bashrc # Guardar configuraciones
+
