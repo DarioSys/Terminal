@@ -280,7 +280,7 @@ sudo apt autoremove           # Elimina paquetes y dependencias innecesarias
 sudo apt autoclean       	  # 
 sudo apt clean           	  # Elimina todos los paquetes de caché descargados
 sudo apt search  <package>	  # Busca un paquete específico
-sudo apt list                     # Lista todos los paquetes instalados
+sudo apt list                 # Lista todos los paquetes instalados
 sudo dpkg -l              	  # Lista todos los paquetes instalados utilizando dpkg
 sudo apt show                 # Muestra las dependencias del paquete
 
@@ -513,8 +513,7 @@ fg               # Mueve los procesos a foreground (Primer plano)
 
 kill -9 <PID>              # Se pone el número del pid que desea matar
 
-pkill -9 <proceso>         # Para matar el proceso 
-por su nombre
+pkill -9 <proceso>         # Para matar el proceso por su nombre
 
 
 # Prioridad de procesos
@@ -657,13 +656,13 @@ iptables -D OUTPUT 1                 # Elimina la regla de id 1
 # CASO 1
 
 # Permitir el NAT para la red1 hacia la red red2
-iptables -t nat POSTROUTING -o [interfaz_1] -j MASQUERADE 
+iptables -t nat -A POSTROUTING -s [red1] -o [interfaz_1] -j MASQUERADE 
 
 # Permitir el tráfico entre red1 y red2
 iptables -t filter -A FORWARD -i [interfaz_1] -s [red1] -o [interfaz_2] -d [red2] -j ACCEPT
 
 # Redirigir el tráfico entrante al puerto 80 hacia cualquier dispositivo en la red2
-iptables -t nat PREROUTING -i [interfaz_1] -p tcp --dport 80 -j DNAT --to-destination [red2_ip]
+iptables -t nat -A PREROUTING -i [interfaz_1] -p tcp --dport 80 -j DNAT --to-destination [red2_ip]
 
 # Permitir el tráfico entrante en cualquier dispositivo de la red2 por el puerto 80
 iptables -t filter -A INPUT -p tcp -s [red2] --dport 80 -j ACCEPT
@@ -677,7 +676,7 @@ iptables -t nat -A POSTROUTING -s [red1] -o [interfaz_1] -j SNAT --to-source [ip
 iptables -t filter -A FORWARD -i [interfaz_1] -s [red1] -o [interfaz_2] -d [red2] -j ACCEPT
 
 # Redirigir el tráfico entrante al puerto 80 hacia el servidor web en red2
-iptables -t nat PREROUTING -i [interfaz_1] -p tcp --dport 80 -j DNAT --to-destination [ip_servidor_web]
+iptables -t nat -A PREROUTING -i [interfaz_1] -p tcp --dport 80 -j DNAT --to-destination [ip_servidor_web]
 
 # Permitir el tráfico entrante al servidor web por el puerto 80 desde red2
 iptables -t filter -A INPUT -p tcp -d [ip_servidor_web] --dport 80 -j ACCEPT
