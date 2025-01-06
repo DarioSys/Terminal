@@ -7,30 +7,31 @@ qemu-img info hdd.qcow2  # Verificar informacion del disco virtual
 
 
 qemu-system-x86_64 --enable-kvm -vga virtio -display spice-app -name 'maquina' -m 2G -smp 2 -hda /path/hdd.qcow2 -boot d -cdrom /path/image.iso
-qemu-system-x86_64 --enable-kvm -vga virtio -display gtk,gl=on -name 'maquina' -m 2G -smp 2 -hda /path/hdd.qcow2 -boot d -cdrom /path/image.iso
 
--name machine
---enable-kvm
--m 2G 
--smp 2
+
+qemu-system-x86_64                                     # Para arquitectura de 64 bits
+-name machine                                          # Nombre de la maquina
+--enable-kvm                                           # Habilitar el kvm en el kernel
 -machine type=q35                                      # Tipo de motherboard moderno soporta SATA
--hda /path/hdd.qcow2 \
--driver file=path/hdd.qcow2,                           # Es un nuevo controlador remplaza a hda que solo soporta IDE
-index=0,                                               # Indicia primer disco                                  
-media=disk,                                            # Indica la media es de tipo disco duro
-if=ide                                                 # Driver disco para windows ide
-if=virtio                                              # Driver disco para linux
--driver file=path/img.iso,index=1,media=cdrom          # Driver tipo cdrom para bootear la imagen
--boot d
--cdrom /path/image.iso
--net nic                                               # Red
--net bridge,br0                                        # Red modo puete, por la interfaz br0
--display spice-app                                     # Servidor grafico spice
+-cpu host                                              # Tomar cpu del hardware anfitrion
+-smp 2                                                 # Numero de nucleo
+-m 2G                                                  # Asignar memoria ram
 -vga qxl                                               # Tarjeta grafica permite el protocolo spice
 -vga std                                               # Tarjeta grafica standar
--vga virtio                                            # Tarjeta grafica virtio  
--device ac97                                           # Dispositivo de audio                                            
--spice port=5930,disable-ticketing=on                  # Uso del protocolo de video spice
+-vga virtio                                            # Tarjeta grafica virtio
+-display gtk,gl=on                                     # Para manipular las ventanas gtk 
+-display spice-app                                     # Servidor grafico spice                                        
+-spice port=5930,disable-ticketing=on                  # Uso del protocolo de video spice   
+-device ac97                                           # Dispositivo de audio 
+-net nic                                               # Red
+-net bridge,br0                                        # Red modo puete, por la interfaz br0
+-hda /path/hdd.qcow2                                   # Disco IDE
+-drive file=path/hdd.qcow2,                            # Es un nuevo controlador remplaza a hda que solo soporta IDE
+index=0,media=disk,if=ide                              # Indicia primer disco, media es de tipo disco duro, driver IDE                                  
+if=virtio                                              # Driver disco para linux
+-drive file=path/img.iso,index=1,media=cdrom           # Driver tipo cdrom para bootear la imagen
+-boot d
+-cdrom /path/image.iso                                 # CD boteeble para la imagen
 -daemonize                                             # Convierte en un servicio en segundo plano.
 
 
@@ -38,16 +39,34 @@ echo "allow br0" > /etc/qemu/bridge.conf
 
 
 qemu-system-x86_64 \
+-name machine \
 --enable-kvm \
+-cpu host \
+-smp 2 \
+-m 2G \
 -vga virtio \
 -display spice-app \
--name machine \
--m 2G -smp 2 \
 -hda /path/hdd.qcow2 \
 -boot d \
 -cdrom /path/image.iso \
 -daemonize
 
+
+qemu-system-x86_64 \
+-name machine \
+--enable-kvm \
+-machine type=q35 \
+-cpu host \
+-smp 2 \
+-m 2G \
+-vga virtio \
+-display spice-app \
+-device ac97 \
+-net nic \
+-net bridge,br0 \
+-drive file=path/hdd.qcow2,index=0,media=disk,if=virtio \
+-drive file=path/img.iso,index=1,media=cdrom \
+-daemonize
 
 
 
