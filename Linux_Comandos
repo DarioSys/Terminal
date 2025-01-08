@@ -397,7 +397,12 @@ chgrp [option] <group> <path>          # Cambia los permisos de grupos a un arch
 chown [option] <user>:<group> [path]   # Dar permisos al usuario user y grupo de forma recursiva
 -R                                     # Aplica de forma recursiva
 
-chmod [signo] [Letra] <file>           # Modifica los atributos de archivos y directorios
+chmod [option] [signo] [Letra] <file>  # Modifica los atributos de archivos y directorios
+
+u   # Usuario
+g   # Grupo
+o   # Otros
+a   # Todos
 
 +   # Establece un atributo.  
 -   # Borra un atributo.
@@ -405,6 +410,8 @@ chmod [signo] [Letra] <file>           # Modifica los atributos de archivos y di
 r   # Permisos de lectura      chmod +r script.sh       chmod 400 script.sh
 w   # Permisos de escritura    chmod +w script.sh       chmod 200 script.sh
 x   # Permisos de ejecución    chmod +x script.sh       chmod 100 script.sh
+
+chmod ugo + x script.sh
 
 - - -       0     000                  
 - - x       1     001
@@ -728,9 +735,9 @@ iptables -A INPUT -i  [interfaz] -p tcp --sport 443 -j ACCEPT
 
 # DMS y Dominios
 
-ping -c 4 [ip]      # Verifico si hay conexión enviando 4 paquete icmp
+ping -c 4 <ip>      # Verifico si hay conexión enviando 4 paquete icmp
 
-nslookup [ip]       # Consultar servidores de nombres de dominio (DNS)
+nslookup <ip>       # Consultar servidores de nombres de dominio (DNS)
 
 dig                 #
 
@@ -738,7 +745,7 @@ whois               #
 
 # Trace
 
-traceroute [ip]     # Verídico las rutas de mi red cuantos saltos de ips da hasta llegar a mi host
+traceroute <ip>     # Verídico las rutas de mi red cuantos saltos de ips da hasta llegar a mi host
 
 # Sockets
 
@@ -754,7 +761,7 @@ tcpdump             #
 
 # Interfaces 
 
-dhclient -r [adaptador]                                  # Libera y renueva la dirección IPv4 actualmente asignada por DHCP.
+dhclient -r <interfaz>                                  # Libera y renueva la dirección IPv4 actualmente asignada por DHCP.
 
 ip addr                                                  # Ver las las conf de red , adaptadores ips, netmask
 
@@ -762,20 +769,23 @@ ip link show                                             # lista todos los adapt
 
 ip route                                                 # Muestra la tabla de enrutamiento 
 
-ip addr add  [IP] [netmask] [broadcast] dev [adaptador]  # Añadir IP Netmask Broadcast
+ip addr add  <IP> <netmask> <broadcast> dev <adaptador>  # Añadir IP Netmask Broadcast
 
-ip route add default via [gateway]                       # Añadir puerta de enlace 
+ip route add default via <gateway>                       # Añadir puerta de enlace 
 
-ip addr flush dev [adaptador]                            # Elimina las configuraciones de red
+ip route add <red>/<mask> via <gateway> dev <interfaz>   # Añadir una ruta a la tabla de enrutamiento
 
-ip link set [adaptador]  {up | down}                     # Prender o apagar el adaptador
 
-ip link set [adaptador] {disable | enable}               # Deshabilita, habilita el adaptador
+ip addr flush dev <interfaz>                            # Elimina las configuraciones de red
+
+ip link set <interfaz>  {up | down}                     # Prender o apagar el adaptador
+
+ip link set <interfaz> {disable | enable}               # Deshabilita, habilita el adaptador
 
 
 ip tuntap add mode tun tun0                              # Crear un adaptador virtual
 
-ip add addr [IP] [netmask] dev tun0                      # Asignar una ip al adaptador virtual
+ip add addr <IP> <netmask> dev tun0                      # Asignar una ip al adaptador virtual
 
 ip link set tun0 up                                      # Levantar el adaptador virtual
 
@@ -787,15 +797,16 @@ ip tuntap del dev tun0                                   # Eliminar el adaptador
 
 route -n                                                 # Muestra la tabla de enrutamiento
 
-route add default gw [gateway]                           # Añadir puerta de enlace 
+route add default gw <gateway>                           # Añadir puerta de enlace 
+
+route add -net <red> netmask <mask> gw <gateway> dev <interfaz>  # Añadir una ruta a la tabla de enrutamiento
 
 
+ifconfig <interfaz> <IP> <netmask> <broadcast>          # Añadir IP Netmask Broadcast
 
-ifconfig [adaptador] [IP] [netmask] [broadcast]          # Añadir IP Netmask Broadcast
+ifconfig <interfaz> {up | down}                         # Prender o apagar el adaptador
 
-ifconfig [adaptador] {up | down}                         # Prender o apagar el adaptador
-
-ifconfig [adaptador] {disable | enable}                  # Deshabilita, habilita el adaptador
+ifconfig <interfaz> {disable | enable}                  # Deshabilita, habilita el adaptador
 
 
 nmcli device                                             # Muestra todos los adaptadores 
@@ -808,13 +819,13 @@ nmcli device wifi list                                   # Escanea mis redes wif
 
 nmcli device wifi connect <RED> password [CLAVE]         # Conecta a una red
 
-nmcli device disconnect  [adaptador]                     # Desconecta de la red
+nmcli device disconnect  <interfaz>                     # Desconecta de la red
 
-nmcli device {up | down} [adaptador]                     # Prender o apagar el adaptador
+nmcli device {up | down} <interfaz>                     # Prender o apagar el adaptador
 
-nmcli device {disable | enable} [adaptador]              # Deshabilita, Deshabilita el adaptador
+nmcli device {disable | enable} <interfaz>              # Deshabilita, Deshabilita el adaptador
 
-nmcli device {disconnect | connect}  [adaptador]         # Conecta o desconecta el adaptador con 
+nmcli device {disconnect | connect}  <interfaz>         # Conecta o desconecta el adaptador con 
 
 seguridad.
 
@@ -822,16 +833,16 @@ seguridad.
 
 iwconfig                                                 # Muestra mis adaptadores inalámbricos y también configura la red
 
-iwconfig [adaptador] essid <RED> key s:[CLAVE]           # Conecta a una red, No sirve para wpa2 solo wep
+iwconfig <interfaz> essid <RED> key s:[CLAVE]           # Conecta a una red, No sirve para wpa2 solo wep
 
-iwconfig [adaptador] essid off                           # Desconecta a una red
+iwconfig <interfaz> essid off                           # Desconecta a una red
 
 
-iwlist [adaptador]  scan | grep ESSID                    # Escanea mis redes wifi
+iwlist <interfaz>  scan | grep ESSID                    # Escanea mis redes wifi
 
 iwlist scan | grep ESSID                                 # Escanea mis redes wifi
 
-iwconfig  [adaptador] txpower {on | off}                 # Prender o apagar el adaptador
+iwconfig  <interfaz> txpower {on | off}                 # Prender o apagar el adaptador
 
        	                                                
 # Agregar a la variable PATH una ruta
