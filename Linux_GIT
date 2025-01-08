@@ -1,0 +1,100 @@
+﻿# GIT
+
+# Configuración de git
+
+git config --global user.name "user of name"            # Configuramos el usuario
+
+git config --global user.email email@gmail.com          # Email
+
+git config --global core.editor "editordecode"          # Configuramos un editor de codigo como predeterminado
+
+git config --global -e                                  # Vemos la configuracion del editor
+
+git config --global core.autocrlf input
+
+input > Linux o MacOS 
+true > Windows
+
+
+# Áreas de GIT  
+
+1. Working Directory # Archivos en la maquina local
+2. Stage Area        # Archivos que están en la zona de preparación y revisión, cuando se usa git add
+3. Git Repository    # Archivos donde los cambios ya se confirmaron a través de un commit listo para subir a un repositorio remoto con un push
+
+# Git commandos
+
+git --version                          # Vemos la version de git
+
+git init                               # Iniciamos git
+
+git branch -M main | master            # Seleccionamos una rama
+
+git status                             # Vemos el estado
+
+git status -s                          # Vemos el estado resumido
+
+git add <file>                         # Añadimos un archivo a la zona stage
+
+git commit -m “primer commit”          # Confirmamos, y pasamos al repositorio local
+
+git log                                # Vemos el registro de todos los commits
+
+git log --oneline                      # Vemos los registros resumidos en una sola línea
+
+git restore <file>                     # Deshace los cambios de la zona del workingdirectory cuando se rescribe el archivo en la zona de staging
+
+git reset <file>                       # Deshace los cambios de la zona de staging pero no de la zona del workingdirectory 
+
+git diff <file>                        # Me muestra las modificaciones sobre un archivo reescrito despues de que se paso a la zona de staging
+
+git restore --stage <file>             # Sale de la zona de staging , este comando se usa despues del primer commit
+
+git restore --stage --worktree <file>  # Restaura los cambios de la zona de staging y de la zona del workingdirectory 
+
+git restore --source <commit> <file>   # Restaura al commit seleccionado, saliendo de la zona de stage y quedando en la workingdirectory 
+
+git --amend <commit>                   # Modifica el nombre del commit 
+
+git checkout <file>                    # Vuelve a una versión anterior del último commit y queda en la zona del workingdirectory 
+
+git checkout <commit> <file>           # Vuelve al commit seleccionado quedando en la zona stage 
+
+git checkout <commit>                  # Vuelve al commit seleccionado pero se desprende de la rama y el HEAD queda posisioando en el commit 
+
+git reset --soft <commit>              # Regresa al commit seleccionado y borra el anterior, se queda en el staging area,y los datos se conserva workingdirectory para volver a commitear
+
+git reset --mixed <commit>             # Regresa al commit seleccionado y borra el anterior, se borra del staging area,y los datos se conserva workingdirectory para volver a añadir al stagin area y volver a commitear
+
+git reset --hard <commit>              # Regresa al commit seleccionado, borra los anteriores y los cambios del archivo los elimina del workingdirectory,  staging area y del repositorio local .git
+
+git revert <commit>                    # Me permite volver a una versión anterior a través de su commit, creando otro commit
+
+git reflog                             # Me permite ver los commits eliminados
+
+git branch                             # Nos dice en qué rama estamos
+
+git branch nueva_rama                  # Creamos una rama
+
+git branch -m rama1 rama2              # Cambiamos el nombre de la rama
+
+git branch -d rama1                    # Eliminamos una rama
+
+git checkout main | master             # Cambiamos de rama
+
+git switch   main | master             # Cambiamos de rama
+
+git diff rama1 rama2                   # Me muestra las diferentes versiones de mis archivos
+
+git merge rama1 rama2                  # Unifica los archivos de las ramas1 y rama2
+
+git remote add origin https://github.com/userl/proyecto.git    # Añadimos a nuestro repo	
+
+git push -u origin main | master                               # Subimos a nuestro repositorio remoto
+
+git pull origin main | master                                  # Descargamos de nuestro repositorio remoto al local
+
+git clone https://github.com/userl/proyecto.git                # Clonamos todo nuestro repositorio
+
+
+
