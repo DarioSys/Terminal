@@ -62,10 +62,10 @@ qemu-system-x86_64 \
 -vga virtio \
 -display spice-app \
 -device ac97 \
--net nic \
--net bridge,br0 \
 -drive file=path/hdd.qcow2,index=0,media=disk,if=virtio \
 -drive file=path/img.iso,index=1,media=cdrom \
+-net nic \
+-net bridge,br0 \
 -daemonize
 
 
