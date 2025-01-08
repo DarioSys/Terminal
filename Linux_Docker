@@ -1,0 +1,152 @@
+# DOCKER 
+
+docker create | run -d --name -p --network -v -e --restart= imagen
+
+
+# Imágenes
+
+
+docker images                 # Listar todas las imágenes
+docker search <img>           # Busca imágenes en docker hub
+docker pull <img>             # Descarga la ultima vers de una imagen
+docker pull <img>:2.8         # Descarga una versión de la imagen 
+docker image rm  <img>        # Borrar una imagen
+docker rmi  <img>             # Borrar una imagen
+
+
+# Contenedores
+
+
+docker ps                        # Listar los contenedores activos
+docker ps -a                     # Listar los contenedores activos y no activos
+docker ps -aq                    # Listar los las IDs de todos contenedores
+docker start  <container>        # Iniciar un contenedor
+docker stop   <container>        # Detener un contenedor
+
+docker container create <img>     # Crea un contenedor a partir la la ultima vers de una imagen
+docker create <img>:2.8           # Crea un contenedor a partir de la vers 2.8 de una imagen
+docker create --name [name] <img> # Poner un nombre a un contenedor usando una imagen
+docker rm  <container>            # Borrar un contenedor
+docker inspect <container>        # Inspecciona las caracteristicas del contenedor
+
+docker commit <container> <img>:latest  # Guardar los cambios en un nuevo contenedor y crea una imagen nueva con los cambios.
+docker exec -it  <container> bash       # Ingresa al linux del contenedor de la app
+docker run -d  <img>                    # Descarga la imagen, crea y enciende el contenedor
+docker run -d --rm <img>                # Descarga la imagen, crea, enciende el contenedor y lo elimina cuando de deja de utilizar.
+docker run -d <img> -p8080:80           # Sale por el puerto 8080 de mi host
+docker run -d -it <img-linux> bash      # Ingresa al linux del contenedor si la imagen es un linux 
+
+docker save -o <img.tar.gz> <img>       # Comprime una imagen
+docker load -i <img.tar.gz>             # Carga la imagen
+
+
+
+docker update --restart=[opcions]<container>  # Actualizar las opciones de un contenedor creado
+
+[opcions]
+
+--restart=alwals                              # El contenedor se inicie siempre que se reinicie el equipo
+--restart=unless-stopped                      # El contenedor se inicie siempre que se haya parado  
+
+
+
+# Volumenes
+
+docker volume ls                       # Me lista los volúmenes 
+docker volume rm      <vol>            # Elimina un volumen 
+docker volume create  <vol>            # Crea un volumen
+docker volume inspect <vol>            # Inspecciona las caracteristicas del volumen.
+
+docker run -d -v --mount src=vol,dst:/path/to/app <img>
+
+docker run -d -v /path/to/host/:/path/to/app <img> --mount type=bind # Montar de tipo bind los volumenes
+
+
+
+# Redes
+
+docker network ls                       # Me lista las redes
+docker network create [name]            # Crea una red con un nombre
+docker network rm [name]                # Elimina una red
+docker network inspect [name]  
+docker run network create [name] --subnet 192.168.0.0 --gateway 192.168.0.1 
+docker run --network [name] bridge <img>  # Crea un contenedor con una red con la ip de mi host
+docker run --network [name] host <img> 
+docker run --network [name] none <img> 
+
+
+# Dockerfie
+
+
+# Creación del archivo Dockerfile, sirve para crear una imagen personalizada a partir de otra imagen.
+
+FROM <img>                      # Crea un contenedor a partir de una imagen
+
+RUN  [comandos]                 # Permite ejecutar comandos
+
+WORKDIC [RUTA]                  # Permite ir a una ruta similar a CD en linux
+
+COPY .[RUTA_HOST] [RUTA_CONT]   # Copia los archivos de la ruta de mi maquina al contenedor que apunta en WORKDIC
+
+COPY .  .                       # Estando en mi directorio de proyecto digo con punto que copie todo a la ruta del contenedor.
+
+EXPOSE [puerto]                 # Expone un puerto 
+
+CMD [“bash”, “file.sh”]         # Ejecuta una un archivo bash
+CMD ["python3", "file.py"]     
+CMD  /bin/bash /home/user/file.sh
+
+docker build -t <img> .         # Crea una imagen de mi archivo Dockerfile y lo ejecuta
+
+
+# Dockercompose
+
+# Creación de un archivo docker-compose.yml 
+
+version: '3.8'
+
+services:
+
+    service1:
+
+      image: name
+      container_name: name
+      ports:
+        - "80:80"
+      networks:
+        - name_network
+      volumes:
+        - /path/app/container
+      environment:
+        VARIABLE_1: value
+        VARIABLE_2: value
+
+    service2:
+
+      image: name
+      container_name: name
+      ports:
+        - "80:80"
+      networks:
+        - name_network
+      volumes:
+        - /path/my/host:/path/app/container
+      environment:
+        VARIABLE_1: value
+        VARIABLE_2: value    
+       
+volumes:
+  vol-service2:
+  
+networks:
+  name_network:
+    driver: bridge
+
+docker compose up -d    # Crea el contenedor
+docker compose down     # Destruye el conetenedor
+docker compose stop     # Detiene el contendoer
+docker compose start    # Inicia el contendor
+
+
+
+
