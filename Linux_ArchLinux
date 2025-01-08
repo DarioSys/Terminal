@@ -1,0 +1,138 @@
+﻿
+# INSTALACIÓN DE ARCH LINUX
+
+
+loadkeys la-latin1              # Poner el teclado en español de la consola virtual
+
+ping -c 4 www.google.com.ar     # Comprobar conexion.
+
+ls /sys/firmware/efi/           # Comprobar si es Bios o UEFI
+
+fdisk -l                        # Buscamos la particion /dev/sdx 20 GiB
+
+fdisk /dev/sdx                  # ingresamos a particionar
+
+m                               # para imprimir la ayuda
+g                               # Crear una tabla de particiones GPT
+o                               # Crear una tabla de particiones MBR
+
+n                               # Creamos una partición
+p # Primaria. 
+1 # numero de particion 
+First sector # Presionamos enter
+Last sector: +250M # Partición Boot
+
+n # Creamos una partición
+p # Primaria. 
+2 # numero de particion 
+First sector # Presionamos enter
+Last sector: +2G # Partición Swap
+
+n # Creamos una partición
+p # Primaria. 
+3 # numero de particion 
+First sector # Presionamos enter
+Last sector: #  Presionamos enter, resto de la partición
+
+F o p # Para ver si hay particiones vacías, “p” para ver las particiones creadas.
+a # Para poner una flag booteable a la partición 250M
+1 # numero de particion 
+p # vemos un * en partición Boot
+t # Cambiamos el tipo de particion FAT32 para EFI y Linux swap para la de intercambio
+1 y L # Seleccionamos la partición y el tipo 0b y 82
+w # Para sobreescribir
+
+lsblk # Para identificar las particiones sda1, sda2 , sda3 etc para montar
+
+# Formateo de las particiones
+
+mkfs.fat -F 32 /dev/sda1
+mkswap -L "SWAP" /dev/sda2
+swapon /dev/sda2
+mkfs.ext4 -L “RAIZ” /dev/sda3s
+
+mkdir -p /mnt/boot  # Para BIOS
+mkdir -p /mnt/boot/efi # Para UEFI
+
+# Montar las particiones
+mount /dev/sda1 /mnt/boot
+mount /dev/sda3 /mnt
+# La particion swap no se monta.
+lsblk # Vemos como quedo todo montado. 
+
+# Instalar el sistema operativo y programas en la partición /mnt
+
+pacstrap /mnt base base-devel linux linux-firmware linux-headers mkinitcpio xf86-input-libinput sudo nano neofetch htop networkmanger dhcp iwd net-tools
+
+# Generamos las configuraciones del montaje en fstab
+
+cat /mnt/etc/fstab
+genfstab -p /mnt >> /mnt/etc/fstab
+cat /mnt/etc/fstab
+
+Entramos a la raíz del nuevo sistema como usuario root.
+
+arch-chroot /mnt
+
+# Configuración de Idioma
+
+nano /etc/locale.gen 
+#es_AR.UTF-8 UTF-8 # lo desmarcamos conf de idioma.
+locale-gen
+echo LANG=es_AR.UTF-8 > /etc/locale.conf
+export LANG=es_AR.UTF-8
+
+# Configuración de zona horaria
+
+ls /usr/share/zoneinfo/
+ln -sf /usr/share/zoneinfo/America/Argentina /etc/localtime
+
+#Reloj del sistema 
+
+hwclock -w
+
+#Teclado 
+
+echo KEYMAP=es > /etc/vconsole.conf
+
+# Nombre del equipo Hostname
+
+echo name.pc > /etc/hostname
+nano /etc/hosts
+
+127.0.0.1 localhost
+
+::1  localhost
+
+127.0.1.1  namepc.localdomain namepc
+
+# Usuarios
+
+passwd root
+useradd -m -g users -G wheel -s /bin/bash usuario
+passwd usuario
+
+pacman -S xdg-user-dirs
+xdg-user-dirs-update
+su usuario -c "xdg-user-dirs-update"
+
+
+systemctl enable dhcpcd NetworkManager
+pacman -S bluez bluez-utils pulseaudio-bluetooth
+systemctl enable bluetooth
+
+# Repositorios
+
+# Instalar el Grub
+ls /boot
+pacman -S grub os-prober
+
+grub-install --target=i386-pc /dev/sda
+grub-mkconfig -o /boot/grub/grub.cfg
+
+exit
+
+umount -R /mnt
+reboot
+
+
