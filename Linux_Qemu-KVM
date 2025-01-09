@@ -3,7 +3,7 @@
 sudo apt install qemu-system virt-viewer
 
 qemu-img create -f qcow2  /path/hdd.qcow2 <size>G  # Crear un disco virtual, tamaño en gigabites
-qemu-img info hdd.qcow2  # Verificar informacion del disco virtual
+qemu-img info hdd.qcow2                            # Verificar informacion del disco virtual
 
 
 qemu-system-x86_64 --enable-kvm -vga virtio -display spice-app -name 'maquina' -m 2G -smp 2 -hda /path/hdd.qcow2 -boot d -cdrom /path/image.iso
