@@ -54,7 +54,7 @@ git restore --stage --worktree <file>  # Restaura los cambios de la zona de stag
 
 git restore --source <commit> <file>   # Restaura al commit seleccionado, saliendo de la zona de stage y quedando en la workingdirectory 
 
-git --amend <commit>                   # Modifica el nombre del commit 
+git commit --amend                     # Modifica el nombre del commit 
 
 git checkout <file>                    # Vuelve a una versión anterior del último commit y queda en la zona del workingdirectory 
 
