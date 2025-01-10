@@ -1,0 +1,41 @@
+﻿
+# REPARAR EL GRUB DUAL
+
+Error : unknow filesystem
+Entering rescue mode
+Grub rescue >
+
+ls                 # Listar hasta encontrar la particon ext2
+
+(hd0,gpt|msdos): filesystem is ext2
+
+set boot=(hd0,gpt|msdos)
+
+set prefix=(hd0,gpt|msdos)/boot/grub
+
+insmod normal
+
+normal
+
+exit
+
+
+# MANTEER LA PANTALLA APAGADA SIN SUSPENDER EL EQUIPO
+
+
+apt install vbetool
+
+nano /etc/systemd/logind.conf
+
+Descomentar 
+
+#HandleLidSwitch=suspend borrar suspend y poner ignore
+#HandleLidSwitchExternalPower=suspend
+
+
+systemctl restart systemd-logind
+
+# Crear un alias en .bashrc
+
+alias displayon='sudo vbetool dpms on'
+alias displayoff='sudo vbetool dpms off'
