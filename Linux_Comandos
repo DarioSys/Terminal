@@ -819,19 +819,19 @@ nmcli device wifi list                                   # Escanea mis redes wif
 
 nmcli device wifi connect <RED> password [CLAVE]         # Conecta a una red
 
-nmcli device disconnect  <interfaz>                     # Desconecta de la red
+nmcli device disconnect  <interfaz>                      # Desconecta de la red
 
-nmcli device {up | down} <interfaz>                     # Prender o apagar el adaptador
+nmcli device {up | down} <interfaz>                      # Prender o apagar el adaptador
 
-nmcli device {disable | enable} <interfaz>              # Deshabilita, Deshabilita el adaptador
+nmcli device {disable | enable} <interfaz>               # Deshabilita, Deshabilita el adaptador
 
-nmcli device {disconnect | connect}  <interfaz>         # Conecta o desconecta el adaptador con 
+nmcli device {disconnect | connect}  <interfaz>          # Conecta o desconecta el adaptador con 
 
 seguridad.
 
 
 
-iwconfig                                                 # Muestra mis adaptadores inalámbricos y también configura la red
+iwconfig                                                # Muestra mis adaptadores inalámbricos y también configura la red
 
 iwconfig <interfaz> essid <RED> key s:[CLAVE]           # Conecta a una red, No sirve para wpa2 solo wep
 
@@ -840,11 +840,33 @@ iwconfig <interfaz> essid off                           # Desconecta a una red
 
 iwlist <interfaz>  scan | grep ESSID                    # Escanea mis redes wifi
 
-iwlist scan | grep ESSID                                 # Escanea mis redes wifi
+iwlist scan | grep ESSID                                # Escanea mis redes wifi
 
 iwconfig  <interfaz> txpower {on | off}                 # Prender o apagar el adaptador
 
-       	                                                
+
+# SHH
+
+ssh -p [port] user@IP                                   # Para conectarme al servidor 
+
+ssh-keygen                                              # Genera la llave publica en /home/user/.ssh
+
+ssh-copy-id -p [port] user@IP                           # Copia al servidor la llave en /home/user/.ssh/authorized_keys
+
+ssh -D [port/proxy] -p[port] server@IP                  # Creo un servidor proxy en el navegador configuro localhost y el puerto proxy  
+
+ssh -X ssh -p[port] user@IP [app]                       # Usa aplicaciones graficas del servidor a mi host
+
+ssh -j IP-Server1:[port] -p[port] user@IP-Server2       # Acceder de un servidor a otro en un solo comando
+
+ssh -L [local-port]:IP-inaccesible:[port] -p[port] user@IP-accesible # Abrir un puerto local para acceder a un servidor inaccesible, mediate uno accesible
+
+ssh -p [local-port] user-inaccesible@localhost          # Conectarse al servidor inaccesible a través del puerto local
+
+ssh -R [remote-port]:IP:[port] -p[port] user@IP         # Abrir un puerto remoto para acceder a un servidor
+
+
+
 # Agregar a la variable PATH una ruta
 
 export PATH=$PATH:
