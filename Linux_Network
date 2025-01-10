@@ -1,0 +1,52 @@
+﻿# CONFIGURACIONES DE RED
+
+
+
+# CONFIGURACIONES DE INTERFACES
+
+nano /etc/network/interfaces
+
+# Configuración estática
+
+auto lo
+iface lo inet loopback
+
+auto [adaptador] 
+#allow-hotplug [adaptador]                            
+iface [adaptador]  inet static 
+	wpa-ssid RED
+	wpa-psk CLAVE
+    address 192.168.0.x
+    netmask 255.255.255.0
+    gateway 192.168.0.1
+   	dns-nameservers 	8.8.8.8  8.8.4.4
+
+# Configuración dinámica por dhcp
+
+auto lo
+iface lo inet loopback
+
+auto [adaptador]                            
+iface [adaptador]  inet dhcp
+	wpa-ssid RED
+	wpa-psk CLAVE
+
+
+
+# CONFIGURACION WIFI WAP SUPPLICANT
+
+
+# Crea un archivo de configuración para wpa_supplicant 
+
+/etc/wpa_supplicant/wpa_supplicant.conf
+
+sudo wpa_passphrase RED CONTRASEÑA > wpa_supplicant.conf
+
+# Inicia wpa_supplicant con el archivo de configuración
+sudo wpa_supplicant -B -i [iface]  -c /etc/wpa_supplicant/wpa_supplicant.conf
+
+
+
+
+
+
