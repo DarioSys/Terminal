@@ -1,0 +1,220 @@
+# SERVICIOS
+
+
+# SSH
+
+sudo apt install openssh-server  
+
+sudo nano /etc/ssh/sshd_config
+
+# Authentication:
+
+LoginGraceTime 1m                   # Solo intentar autenticarse por 1 min
+#PermitRootLogin prohibit-password  # Dejar comentada
+PermitRootLogin no                  # No dejar iniciar como Root
+MaxAuthTries 3                      # Hasta 3 intentos
+MaxSessions 4                       # Hasta 4 sessiones
+
+PubkeyAuthentication yes            # Admitir entrar con clave publica
+PasswordAuthentication yes          # Permitir contraseña para autenticar
+PermitEmptyPasswords no             # No ingresar sin contraseña
+
+# Crear un script para acceder con un alias a servidores ssh
+
+nano ./ssh/config 
+
+# Script Configuraciones SSH
+
+Host [servidor1]          #Definir un alias, sin el corchete
+Hostname [IP]
+        User [name]       #Nombre del Servidor, sin el corchete
+        Port [port]       #Numero de puerto, sin el corchete
+
+Host [servidor2]
+Hostname [IP]
+        User [name]
+        Port [port]
+
+# APACHE
+
+sudo apt install apache2
+
+cd /etc/apache2/sites-available
+
+cp 000-default.conf  web1.conf
+
+nano web1.conf
+
+ServerName tuxitotuxi.com
+    	ServerAdmin webmaster@localhost
+    	DocumentRoot /var/www/html/miweb
+
+cd /var/www/html/
+
+mkdir miweb
+
+
+a2ensite web1.conf /usr/bin a2ensite web1.conf   ruta completa si no funciona
+
+systemctl restart apache2
+
+# SERVIDOR PYTHON
+
+sudo python3 -m http.server [port] # Pc servidor
+
+# FAIL2BAN 
+
+etc/fail2ban/jail.local
+
+cp jail.conf jail.local
+
+nano jail.local
+
+ignoreip = 127.0.0.1/8 ::192.168.0.x    # IP que tiene acceso
+
+bantime  = 24h                          # Banear por 24 horas
+
+findtime  = 1m                          # Tiempo de auttenticacion hasta 1 min
+
+maxretry = 3                            # Maximos de intentos
+
+no-ip 127.0.0.1                         # Excluye las restriciones a esta ip 
+
+# Revidar los logs
+
+tail -f /var/log/fail2ban.log para ver las ips baneadaas
+
+# Ver Ips baneadas
+
+sudo fail2ban-client status
+
+
+
+# SAMBA 27/08/2023 
+
+sudo apt install samba # Instalación de Samba
+
+sudo nano /etc/samba/smb.conf # Archivo de configuracion
+
+[global]
+   workgroup = WORKGROUP
+   interfaces = 192.168.0.52/24 # opcional
+
+[LinuxShare]
+   comment = Mi Servidor Linux 
+   path = /ShareDisk
+   browseable = yes
+   read only = no
+   writeable = yes
+   guest ok = yes
+
+	
+ 
+#[share]
+#   comment = Mi Servidor 
+#   path =
+#   browseable = yes      #para que mi red sea visible
+#   read only = no	     #Para que tengan permisos de lectura y escritura debe estar como "no"
+#   writeable = yes       #Para que los usuarios tengan permiso de escritura
+#   write list =    	     #Para listar que usuarios tienen permisos de escritura
+#   guest ok = yes	     #Permite acceder a usuarios invitados y autenticados sin contraseña
+#   guest only = Yes      #Permite acceder a usuarios invitados excluyendo a los autenticados.
+#   public = yes  	     #Permite acceder tanto a invitados como autenticados sin restricciones.
+#   valid users =         #Aca hay que crear un usuario con password en smb o en la pc servidor y con ese se accede a la pc cliente
+
+sudo smbpasswd -a usuario # Poner el usuario y seguido la contraseña para samba
+
+smbd # servicio Samba
+nmbd # servicio NMB
+
+[IP] # Poner la ip del servidor en el explorador de archivos.
+
+
+# VNC 
+
+# Clientes
+
+sudo apt install vinagre                   
+sudo apt install remmina           
+sudo apt install tigervnc-viewer   
+sudo apt install xtightvncviewer   
+
+# Servidor
+
+sudo apt install tigervnc-standalone-server    
+sudo apt install x11vnc                         
+sudo apt install tightvncserver                 
+sudo apt install vnc4server                     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+make localmodconfig 
+make menuconfig
+sudo make -j$(nproc) bindeb-pkg
+
+sudo update-grub        # Me actualiza el grub
+
+# tener cosola interactiva 
+
+chsh
+
+contraseña usuario
+escribir /bin/bash
+
+#Ingresar por ssh desde el servidor gráfico para administrar los dispositivos usb cam
+
+ssh -X | -Y -p user@ip
+
+# X Con restricciones de seguridad
+# Y Sin restricciones de seguridad es para acceder completamente si conozco el equipo
+
+v4l-utils  # Paquete para verificar cámara
+
+v4l2-ctl --list-devices # Listar los dispositivos de video
+
+v4l2-ctl --device=/dev/video0 --set-ctrl=power_line_frequency=1
+
+cheese v4l2:///dev/video0 # Abrir con cheese
+
+cvlc v4l2:///dev/video0 # Abrir con vlc 
