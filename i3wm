@@ -1,0 +1,49 @@
+# Configuración I3WM                                           
+
+sudo nano ~/.config/i3/config
+
+# Añado el fondo de escritorio
+exec --no-startup-id feh --bg-fill /usr/share/backgrounds/tuxito.png
+
+# Añado el Rofi
+bindsym $mod+Control+d exec rofi -modi run -show run
+bindsym $mod+d exec rofi -modi run -show drun -show-icons
+bindsym $mod+Shift+d exec rofi -show window -show-icons
+
+# Quitar los bordes de las ventanas
+default_border pixel 0
+default_floating_border pixel 0
+smart_borders on
+
+# Espacio entre ventanas
+gaps outer 0
+gaps inner 1
+
+# Quitar el titulo de las ventanas
+for_window [class="^.*"] border pixel 1
+
+# Añado color al bordes de ventanas
+#client.focused #444444 #bf7500 #444444 #ffff70
+client.focused #4682B4 #4682B4 #4682B4 #4682B4
+
+# Añado el picom
+#exec --no-startup-id picom -b
+
+# Bloqueador de Pantalla
+exec --no-startup-id light-locker
+# Captura de pantalla
+bindsym Print exec --no-startup-id xfce4-screenshooter
+# Añado firefox
+bindsym $mod+n exec --no-startup-id firefox
+# Añado thunar
+bindsym $mod+t exec --no-startup-id thunar
+# Añado pulseaudio
+bindsym $mod+p exec --no-startup-id pavucontrol
+# Añado el polkit para la autenticacion.
+exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
+# Apagar la pc
+bindsym Control+Shift+1 exec --no-startup-id systemctl poweroff
+# Reiniciar la pc
+bindsym Control+Shift+2 exec --no-startup-id systemctl reboot
+# Suspender la pc
+bindsym Control+Shift+3 exec --no-startup-id systemctl suspend
