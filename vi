@@ -1,0 +1,30 @@
+
+h # Inzquiera
+j # Abajo
+k # arriba
+l # Derecha
+
+ESC : 6 + k                  # Subir rapidamente
+ESC : 6 + j                  # Bajar rapidamente
+ESC s/palabra/otrapalabra/g  # Busca en todo el texto
+
+ESC + x       # Borrar una linea en modo seleccion
+ESC + supr    # Borra en modo seleccion
+
+ESC + yy      # Copia una linea
+ESC + 2yy     # Copia dos linea
+ 
+ESC + dd      # Corta 1 linea 
+ESC + 2dd     # Corta 2 lineas 
+
+ESC + pp      # Pegar
+
+v             # Modo visual 
+d             # Cortar 
+y             # copiar
+p             # Pegar
+
+
+o             # Crea una linea en blanco abajo y queda en modo instert
+u             # Deshacer
+ctrl + r      # Reacer
