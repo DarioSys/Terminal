@@ -847,23 +847,81 @@ iwconfig  <interfaz> txpower {on | off}                 # Prender o apagar el ad
 
 # SHH
 
-ssh -p [port] user@IP                                   # Para conectarme al servidor 
+ssh -p <port> user@IP                                              # Para conectarme al servidor 
 
-ssh-keygen                                              # Genera la llave publica en /home/user/.ssh
+ssh-keygen                                                         # Genera la llave publica en /home/user/.ssh
 
-ssh-copy-id -p [port] user@IP                           # Copia al servidor la llave en /home/user/.ssh/authorized_keys
+ssh-copy-id -p <port> user@IP                                      # Copia al servidor la llave en /home/user/.ssh/authorized_keys
 
-ssh -D [port/proxy] -p[port] server@IP                  # Creo un servidor proxy en el navegador configuro localhost y el puerto proxy  
+ssh -X ssh -p<port> user@IP <app>                                  # Usa aplicaciones graficas del servidor a mi host
 
-ssh -X ssh -p[port] user@IP [app]                       # Usa aplicaciones graficas del servidor a mi host
+ssh -D <port-proxy> -p <port> user@IPserver                        # Creo un servidor proxy en el navegador configuro localhost y el puerto proxy 
 
-ssh -j IP-Server1:[port] -p[port] user@IP-Server2       # Acceder de un servidor a otro en un solo comando
+ssh -t -p <port> user@IP command                                   # Ejecutar un comando de forma remota
 
-ssh -L [local-port]:IP-inaccesible:[port] -p[port] user@IP-accesible # Abrir un puerto local para acceder a un servidor inaccesible, mediate uno accesible
+ssh -t -p 22 user@220.222.22.20 ls                                 # Listo de forma remota
 
-ssh -p [local-port] user-inaccesible@localhost          # Conectarse al servidor inaccesible a través del puerto local
+ssh -j <IPserver1>:<port> -p <port> user@IPserver2                 # Acceder de un servidor a otro en un solo comando
 
-ssh -R [remote-port]:IP:[port] -p[port] user@IP         # Abrir un puerto remoto para acceder a un servidor
+
+ssh -L [IP-local]:<local-port>:<IP-remote>:<port> -p <port> user@IPserver   # Crea una ip local y puerto en el host para acceder al servidor remoto o sus servicios
+
+ssh -p <local-port> user@<IP-local>                                         # Conectarse al server por el puerto local y la ip local
+
+# El la ip y puerto [IP-local]:<local-port> son mapeados a ... <IP-remote>:<port>
+
+
+# Ejemplos:
+ 
+
+# Para SSH
+
+ssh -L 192.168.0.2:44:192.168.1.10:222 -p 22 user@220.222.22.20             # Creo una ip y puerto local en mi host y lo mapeo a la ip y puerto en el servidor
+
+ssh -p 44 user@192.168.0.2                                                  # Me conecto al servidor 220.222.22.20 usando la ip y puerto que cree en mi host
+
+# Para un servidor inaccesible
+
+ssh -L 192.168.0.2:44:72.47.3.67:222 -p 22 user@220.222.22.20               # Creo una ip y puerto local en mi host y lo mapeo a la ip y puerto en el servidor2
+
+ssh -p 44 user2@127.10.0.1                                                  # Me conecto al servidor2 72.47.3.67 a través del servidor1 220.222.22.20
+
+
+# Para un servidor web
+
+ssh -L 192.168.0.2:44:192.168.1.10:80 -p 22 user@220.222.22.20              # Creo una ip y puerto local en mi host y lo mapeo a la ip y puerto donde corre el apache
+
+http://192.168.0.2:44                                                       # Accedo al servidor apache por la ip y puerto local
+
+
+
+ssh -R [IP-remote]:<remote-port>:<IP-local>:<port> -p <port> user@IPserver  # Crea una ip remota y puerto en el servidor remoto para acceder al host o sus servicios
+
+ssh -p <remote-port> userhost@<IP-remote>                                   # Desde el servidor accede al host por la ip y puerto remoto
+
+
+# Ejemplos:
+
+
+# Para SSH
+
+ssh -R 192.168.1.10:44:192.168.0.2:222 -p 22 user@220.222.22.20             # Crea una ip remota y puerto en el servidor remoto para acceder al host o sus servicios
+
+ssh -p 44 userhost@192.168.1.10                                             # Desde el servidor 220.222.22.20 accede al host por la ip y puerto remoto
+
+
+# Para un servidor web
+
+ssh -R 192.168.1.10:44:192.168.0.2:80 -p 22 user@220.222.22.20              # Crea una ip remota y puerto en el servidor remoto para acceder al servidor web del host 
+
+http://192.168.0.2:44                                                       # Desde el servidor accedo al servidor web del host por la ip y puerto remoto
+
+
+
+
+
+
+
 
 
 
