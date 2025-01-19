@@ -1,4 +1,4 @@
-# 21/07/2023 - 03/01/2025
+# 21/07/2023 - 18/01/2025
 
 # ARCHIVOS Y DIRECTORIOS
 
@@ -81,6 +81,10 @@ find <path> [option]
 -name '*file*'     # Nombre del archivo a buscar
 -print             # Buscar todos los archivos con ese nombre
 
+locate <file>      # Busca los archivos en la base de datos updatedb
+
+updatedb           # Actualiza la base de datos de locate
+
 which   <binary>   # Muestra la ruta donde se encuentra el binario
 
 whereis <binary>   # Muestra todas las ruta donde se encuentra el binario y su manual.
@@ -114,11 +118,16 @@ tail [option] <file>   # Muestra las 10 últimas líneas
 -f                     # Muestra en tiempo real las líneas de un evento
 -n                     # Muestra el numero de lineas
 
-sort [option] <file>   # Filtra ASC | DESC el contenido de un archivo
+sort [option] <file>   # Ordena ASC | DESC el contenido de un archivo
+
+-n                     # Ordena primero los strings y ultimo los numeros
 
 grep [option] <expresión> <file> # Permite filtrar por el texto que buscamos
 
 -i                     # Busca 'expresión' en el archivo, ignorando mayúsculas y minúsculas
+-v                     # Excluye las lineas que contengan la expresion que ponemos en grep
+-l                     # Solo aparece las lineas que coinciden con la expresion
+-R                     # Busca de forma recursiva
 
 grep -i 'HoLa' file.txt 
 
@@ -130,9 +139,19 @@ sed ‘s/texto/texto2/’ file.txt     # Remplaza texto por texto2 en la salida 
 
 sed -i ‘s/texto/texto2/’ file.txt  # Remplaza texto por texto2 en el archivo archivo
 
-wc -l [option] <file>              # Cuenta la cantidad de lineas que tiene 
+wc  [option] <file>             
+-l                                 # Cuenta la cantidad de lineas que tiene
+ 
+uniq [option] <file>           
+-c                                 # Cuenta cuantas veces aparece una misma linea
 
-xargs [option] <file>              #
+cut [option] <file>                
+
+-d                                 # Delimitador
+-f                                 # Imprime la columna
+
+cut -d, -f 2 <file>                      
+
 
 awk '{print $0}' datos.txt                            # Imprime todo el contenido
 
@@ -156,19 +175,24 @@ awk '{ORS="\n\"} {print $1, $2}' datos.txt           # Delimitador de salida de 
 
 
 
-<command out> |  {grep | sort | sed | wc | awk} <expresión> # Busca la expresion
+<command out> |  {grep | sort | sed | wc | awk | xargs | uniq} <expresión> # Busca la expresion
 
 ls -lh | grep 'programas.txt'
 
+cat <file> | xargs               # Elimina los saltos de linea
 
 
 # stdin :0 stdout :1 stderr:2  /dev/null
+
+cat <file> <<EOF                 # Permite usar el standar input con el comando cat
+
+EOF
 
 cat existe.txt   1> stdout.txt
 cat noexiste.txt 2> stderr.txt
 
 cat existe.txt   1> /dev/null
-cat existe.txt   2> /dev/null
+cat noexiste.txt 2> /dev/null
 
 
 
@@ -198,8 +222,9 @@ df [option]                  # Muestra las unidades y el espacio libre
 -T
 
 du [option] [path]           # Muestra el espacio ocupado
--h                        
+-h                           # Lenguaje humano
 -c
+-s                           # Para directorios
 
 # Montar 
 
@@ -271,17 +296,17 @@ tar -czvf archivo.tar.gz Comprimir
 
 # Debian
 
-sudo apt update           	  # Actualiza la lista de paquetes disponibles
-sudo apt upgrade         	  # Descarga e instala lista de paquetes disponibles
+sudo apt update               # Actualiza la lista de paquetes disponibles
+sudo apt upgrade              # Descarga e instala lista de paquetes disponibles
 sudo apt install <package>    # Instala el paquete
 sudo apt remove  <package>    # Elimina el paquete sin archivos de configuración
 sudo apt purge   <package>    # Elimina el paquete con archivos de configuración
 sudo apt autoremove           # Elimina paquetes y dependencias innecesarias
 sudo apt autoclean       	  # 
-sudo apt clean           	  # Elimina todos los paquetes de caché descargados
-sudo apt search  <package>	  # Busca un paquete específico
+sudo apt clean                # Elimina todos los paquetes de caché descargados
+sudo apt search  <package>    # Busca un paquete específico
 sudo apt list                 # Lista todos los paquetes instalados
-sudo dpkg -l              	  # Lista todos los paquetes instalados utilizando dpkg
+sudo dpkg -l                  # Lista todos los paquetes instalados utilizando dpkg
 sudo apt show                 # Muestra las dependencias del paquete
 
 # Arch Linux
@@ -294,8 +319,8 @@ sudo pacman -Rs <paquete>     # Elimina el paquete con sus dependecias
 
 # Fedora
 
-sudo dnf update          	  # Actualiza todos los paquetes disponibles
-sudo dnf upgrade         	  # Descarga e instala lista de paquetes disponibles
+sudo dnf update               # Actualiza todos los paquetes disponibles
+sudo dnf upgrade              # Descarga e instala lista de paquetes disponibles
 sudo dnf install <package>    # Instala el paquete 
 sudo dnf remove  <package>    # Elimina el paquete 
 sudo dnf autoremove           # Elimina paquetes y dependencias innecesarias
@@ -388,6 +413,11 @@ last    # Muestra el historial de inicios de sesión.
 
 lastb   # Muestra intentos fallidos de inicio de sesión.
 
+tty     # Muestra las tty , terminales activas
+
+laslogins # Muestra los usuarios conocidos
+
+lastlog   # Muestra los usuarios recientes
 
 # Permisos
 
@@ -411,6 +441,9 @@ r   # Permisos de lectura      chmod +r script.sh       chmod 400 script.sh
 w   # Permisos de escritura    chmod +w script.sh       chmod 200 script.sh
 x   # Permisos de ejecución    chmod +x script.sh       chmod 100 script.sh
 
+chmod u + x script.sh
+chmod g + x script.sh
+chmod o + x script.sh
 chmod ugo + x script.sh
 
 - - -       0     000                  
@@ -439,7 +472,7 @@ cal
 
 timeout
 
-time 
+time <commnad>                     # Dice en cuanto tiempo de ejecutó el comando
 
 uptime
 
