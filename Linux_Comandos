@@ -142,8 +142,9 @@ sed -i ‘s/texto/texto2/’ file.txt  # Remplaza texto por texto2 en el archivo
 wc  [option] <file>             
 -l                                 # Cuenta la cantidad de lineas que tiene
  
-uniq [option] <file>           
+uniq [option] <file>               # Filtra lineas unicas repetidas, no muestra las lineas repetidas
 -c                                 # Cuenta cuantas veces aparece una misma linea
+-d                                 # Solo nuestra las lineas repetidas
 
 cut [option] <file>                
 
@@ -151,6 +152,14 @@ cut [option] <file>
 -f                                 # Imprime la columna
 
 cut -d, -f 2 <file>                      
+
+command | xargs [command]        # Perminte ejecutar un comando a través de la salida de otro comando
+
+echo "carpeta" | xargs mkdir     # Crea una carpeta a través de la salida del echo
+
+cat <file> | xargs               # Elimina los saltos de linea
+
+command | tee > <file>           # Redirecciona la salida de un comando a un archivo
 
 
 awk '{print $0}' datos.txt                            # Imprime todo el contenido
@@ -178,8 +187,6 @@ awk '{ORS="\n\"} {print $1, $2}' datos.txt           # Delimitador de salida de 
 <command out> |  {grep | sort | sed | wc | awk | xargs | uniq} <expresión> # Busca la expresion
 
 ls -lh | grep 'programas.txt'
-
-cat <file> | xargs               # Elimina los saltos de linea
 
 
 # stdin :0 stdout :1 stderr:2  /dev/null
@@ -468,21 +475,26 @@ date [option]                      # Muestra la fecha del sistema
 
 date -s AAAA-MM-DD HH:MM:SS        # Para modificar la fecha y hora.
 
-cal 
+cal                                # Muestra el calendario
 
 timeout
 
 time <commnad>                     # Dice en cuanto tiempo de ejecutó el comando
 
-uptime
+uptime                             # Muestra cuantio tiempo estubo prendido la pc
 
-sleep
+sleep                              # Ejecuta un comando en un tiempo determinado
 
-watch
+sleep 3 && apt install apache2     # Instala apache despues de tres segundos
 
-cron 
+watch -n 3 [command]               # Actualiza un comando cada tres segundos constantemente        
 
-crontab
+cron                               # 
+
+crontab                            # Para realizar tareas programadas por un usuario
+
+m h dom mon dow command
+
 
 # CONTROL DE SESIONES Y TERMINAL
 
@@ -790,11 +802,11 @@ ss -ltuna           # Para ver las conexiones activas
 
 iftop               #
 
-tcpdump             #
+tcpdump -i wlan0    # Muestra el trafico de la interfaz wlan0
 
 # Interfaces 
 
-dhclient -r <interfaz>                                  # Libera y renueva la dirección IPv4 actualmente asignada por DHCP.
+dhclient -r <interfaz>                                   # Libera y renueva la dirección IPv4 actualmente asignada por DHCP.
 
 ip addr                                                  # Ver las las conf de red , adaptadores ips, netmask
 
