@@ -1,0 +1,100 @@
+﻿# Expresiones Regulares
+
+/patron/
+
+/patron/g
+
+/Patron/i
+
+/[ao]/g                      # Corchete busca todos los caracteres que lo contienen
+
+/[0-5]/g       
+
+ /[^0-9]/g                   # ^ No incluye caracteres del 0 al 9 y todo lo demas si
+
+/.h/g                        . Carácter anterior a la letra con la letra inclusive         
+
+
+/\b abc/g                    Busca el el string por al comienzo
+
+/abc\b/g                     Busca por el final
+
+# Cuantificadores
+
+/abc+/g                      busca abc y c al menos una vez
+
+/0*55/g                      busca de cero a 55 mas de una vez
+
+/abz?/g                      busca abz almenos una 
+
+/(hola){3}/g                 busca tres veces ese patron
+
+/5{3}/g                      busca tres veces ese numero
+
+/(.com)$/g                   busca al final
+
+ /^(www)]/g                  busca al inicio
+
+ /(?=)]/                      
+
+#  Coincidencias Basicas
+
+.       - Cualquier Caracter, excepto nueva linea
+\d      - incluye cualquier dígito del 0 al 9
+\D      - excluye cualquier dígito del 0 al 9
+\w      -  Busca cualquier caracter que no sea simbolos  (a-z, A-Z, 0-9, _)
+\W      - No es un Caracter de Palabra.
+\s      - Espacios de cualquier tipo. (espacio, tab, nueva linea)
+\S      - No es un Espacio, Tab o nueva linea.
+
+# Otros
+
+\t       Tabulador
+\r       Retorno
+\n       Salto de linea
+\a       Produce sonido al imprimir un caracter.
+\A       Representa el inicio de la cadena. No un carácter sino una posición.
+\Z       Representa el final de la cadena. No un carácter sino una posición.
+\e       Tecla Esc
+\f       Salto de pag
+\v       Representa un tabulador vertical
+\x       representar caracteres ASCII o ANSI
+\u       representar caracteres Unicode
+
+
+# Limites
+
+\b      - Limite de Palabra
+\B      - No es un Limite de Palabra
+^       - Inicio de una cadena de texto
+$       - Final de una cadena de texto
+
+# Cuantificadores
+
+*       - 0 o Más
++       - 1 o Más
+?       - 0 o Uno
+{3}     - Numero Exacto
+{3,4}   - Rango de Numeros (Minimo, Maximo)
+
+# Conjuntos de Caracteres
+
+[]      - Caracteres dentro de los brackets
+[^ ]    - Caracteres que NO ESTAN dentro de los brackets
+
+# Grupos
+
+( )     - Grupo
+|       - Uno u otro
+
+
+
+
+
+
+
+
+
+
+
+
