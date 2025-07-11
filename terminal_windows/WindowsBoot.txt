@@ -1,0 +1,241 @@
+Date: 29/06/2025
+
+Windows 
+1-
+msinfo32 :: Ejecutar la sig orden en el boton "Ejecutar"
+
+BIOS Mode:  Legacy/Heredado 
+BIOS Mode:  UEFI       
+
+2-
+bcdiedit :: Ejecutar la sig orden en la terminal.
+
+windload.efi (UEFI)
+winload.exe  (BIOS/Legacy/Heredado)
+
+3-
+Browser to ... and open file with notepad
+
+C:\Windows\Panther\setupct.log
+
+* Callback_BootEnvironmentDetect: Detected boot environment: BIOS
+
+* Callback_BootEnvironmentDetect: Detected boot environment: UEFI
+
+4-
+
+Administrador de discos ver la parcicion de arranque
+
+
+------------------------------------------------------------------------------------------------
+
+DISKPART
+
+Discos
+
+list disk               :: Listar discos
+
+select disk <n>         :: Seleccionar un disco por su numero
+
+clean                   :: Borra el disco incluido el esquema de particiones
+
+convert gpt | mbr       :: Convierte a un esquema de particiones
+
+Particiones
+
+list partition                      :: Listar particiones
+
+select partition <n>                :: Seleccionar una particion por su numero
+
+active                              :: Marca como activa a la particion de arranque sin esto no funciona.
+
+create partition efi size=          :: Crea particion de tipo efi.
+
+create partition msr size=          :: Crea particion de tipo (MSR) Microsoft Reserved (GPT)
+
+create partition primary            :: Crea particion de tipo primaria
+
+create partition extended           :: Crea particion de tipo extendida
+
+create partition logical            :: Crea particion de tipo logica
+
+delete partition                    :: Elimina una partición
+
+shrink desired=size                 :: Reduce el tamaño de una particion seleccionada
+
+shrink minimum=size                 :: Reduce el tamaño de una particion seleccionada
+
+extend size=size                    :: Extiende el tamaño de una particion seleccionada  
+
+Volumenes
+
+list volume                        :: Listar volumenes
+
+select volume <n>                  :: Seleccionar un volumen por su numero
+
+Formateos
+
+format quick fs=fat32|ntfs label="Name"      :: Formatea la particion en fat32 o ntfs
+
+assign letter="L"                            :: Asigna una letra a la particion para el volumen
+
+remove letter="L"                            :: remueve una letra a la particion para el volumen
+
+
+--------------------------------------------------------------------------------------------------
+
+
+sfc /scannow               ::Verificar y reparar archivos del sistema de Windows
+
+chkdsk c: /f /r            ::Verificar y reparar errores del disco duro
+
+
+BCDBOOT                    :: Herramienta para reparar el arranque BIOS/EFI crea los directorios y archivos de BCD :
+
+bcdboot <source> [/s <letter>]: [/f firmware]
+
+L:\>bcdboot c:\windows /s  L:  /f ALL
+
+<c:\windows>          :: Directorio del sistema
+/s  <letter>          :: Letra del volumen de la partición de arranque
+/f  <firmware>        :: {BIOS | UEFI | ALL}
+
+BIOS                  :: Crea el directorio \Boot en la partición del sistema y copia todos los archivos de arranque
+UEFI                  :: Crea el directorio \Efi\Microsoft\Boot y copia todos los archivos de arranque
+ALL                   :: Crea los directorios \Boot y \Efi\Microsoft\Boot y copia todos los archivos de arranque  para BIOS y UEFI 
+
+
+
+BOOTREC               :: Reparar problemas de arranque.
+
+bootrec [/ argument]
+
+
+bootrec /fixmbr       :: Reparar MBR dañado, no reescribe la tabla de particiones (No usar con GPT)
+
+bootrec /fixboot      :: Escribe un nuevo sector de arranque
+
+bootrec /scanos       :: Busca instalaciones de windows, muestra entradas que no estan BCD, utilizar cuando no hay entradas en el menú de arranque.
+
+bootrec /rebuildbcd   :: Busca instalaciones de windows y reconstruye el almacen BCD también cuando aparece el error "Falta Bootmgr".
+
+
+
+BOOTSECT  :: Actualizar el código del sector de arranque Maestro.(Solo para MBR)
+
+bootsect {/help |  /nt60} {SYS | ALL | <Letter:>} [/force] /mbr
+
+L:\>bootsect /nt60 all /force 
+
+/nt60        :: Actualiza el codigo comptibles bootmgr a sys, all o <letter> desde windows 8 en adelante.
+
+/sys         :: Actualiza solo en la particion del sistema
+
+/all         :: Actualiza en todas las particiones
+
+<letter>     :: Letra de la unidad
+
+/force       :: Desmomta volumenes si estan en uso para escribir el nuevo codigo
+
+
+
+
+BCDEDIT               :: Modificar la configuración de arranque de Windows.
+
+BCDEdit /Command[Argument1] [Argument2] ...
+
+/export
+
+/import
+
+/store
+
+/sysstore
+
+/copy
+
+/create
+
+/delete
+
+/mirror
+
+/deletevalue
+
+/set
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+partition 1   100|260 MB      Sistema (arranque BIOS/EFI)
+partition 2   16 MB           Reservado (MSR) (configuración de disco GPT)
+partition 3   20GB            Principal (Windows)
+partition 4   500 MB          Recuperación (Recovery)
+
+:: La partición MSR no se formatea
+
+
+           Ltr  FS
+volumen 0    
+volumen 1   C   ntfs      20 GB
+volumen 2       fat32     100MB
+volumen 3       ntfs      500MB
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+bcdedit /export C:\BCD_Backup    :: Exporta el almacen bcd haciendo un backup en una ruta en este caso la unidad C:
+
+L:                               :: Letra de la partición de arranque
+
+cd boot                          :: Ingresar en el directorio boot del arranque
+
+attrib bcd -s -h -r              :: Aplica ciertos atributos al directorio del almacen bcd s (file system) h (file hidden) r (read-only file)
+
+ren bcd bcd.old                  :: Renombra el bcd como una copia vieja
+
+bootrec /RebuildBcd              :: Reconstruye un nuevo directorio bcd con sus archivos de configuracion
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Modo recovery  
+
+Boton reiniciar + shift
+
+Shit F10
+
+1. taskmgr
+Finalizar proceso flujo de conexión red2
+
+2. oobe/bypassnro {desconectar eternet}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
