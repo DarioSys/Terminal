@@ -1,72 +1,211 @@
 ﻿-----------REPARAR EL ARRANQUE DE WINDOWS EFI---------------
 
-:: Parición EFI
+Date: 29/06/2025
 
-diskpart
+Windows 
+1-
+msinfo32 :: Ejecutar la sig orden en el boton "Ejecutar"
 
-list disk                                    	:: Listo todos los discos
+BIOS Mode:  Legacy/Heredado 
+BIOS Mode:  UEFI       
 
-select disk              	 
+2-
+bcdiedit :: Ejecutar la sig orden en la terminal.
 
-list volume                                	:: Listo todos los volumenes
+windload.efi (UEFI)
+winload.exe  (BIOS/Legacy/Heredado)
 
-select volume                          	:: Selecciono el volumen mas chico el de arranque de 100 a 260Mb
+3-
+Browser to ... and open file with notepad
 
-list partition                              	:: Si no existe la partición EFI
+C:\Windows\Panther\setupct.log
 
-select partition              	            :: Seleciono una particion del disco.
+* Callback_BootEnvironmentDetect: Detected boot environment: BIOS
 
-shrink desiret=200 minimun=200       :: Le asigno un tamaño de 200Mb
+* Callback_BootEnvironmentDetect: Detected boot environment: UEFI
 
-create partition efi size=100                :: Creo una particion nueva de 100Mb para el arranque
+4-
 
-list volume
-
-select volume
-
-assign letter Z
-
-format fs=fat32 quick
-
-exit
-
-bcdboot c:\windows /s Z: /f all
+Administrador de discos ver la parcicion de arranque
 
 
------------REPARAR EL ARRANQUE DE WINDOWS BOOT---------------
+sfc /scannow               ::Verificar y reparar archivos del sistema de Windows
 
-:: Partición Boot
-
-sfc /scannow
-chkdsk c: /f /r
-
-bootrec /fixmbr
-bootrec /fixboot
-bootrec /rebuilbdc # presionar "s"
-
-bcdedit /export c:\bcdbackup
-cd boot
-attrib -h -r -s
-ren bcd bcd.old
-bootrec /rebuilbdc
+chkdsk c: /f /r            ::Verificar y reparar errores del disco duro
 
 
--------------DESACTIVAR EL ARRANQUE SEGURO-----------------------------------
+DISKPART
 
-Desactivar el arranque seguro cuando no bootea el pendriver.
+Discos
 
-Secure Boot [Enable] a [Disable]
+list disk               :: Listar discos
 
-Si querés que la pc arranque para S.O antiguos
-
-Legacy Support [Disable] a [Enable]
+select disk <n>         :: Seleccionar un disco por su numero
 
 
-—--------------------------------SALTAR CONEXION A INTERNET EN W11 O CUENTA MICROSOFT---------------
+Particiones
 
-Shit F10
+list partition                      :: Listar particiones
 
-1. taskmgr
-Finalizar proceso flujo de conexión red2
+partition 1   100|260 MB      Sistema (arranque BIOS/EFI)
+partition 2   16 MB           Reservado (MSR) (configuración de disco GPT)
+partition 3   20GB            Principal (Windows)
+partition 4   500 MB          Recuperación (Recovery)
 
-2. oobe/bypassnro {desconectar eternet}
+:: La partición MSR no se formatea
+
+
+select partition <n>                :: Seleccionar una particion por su numero
+
+list partition                      :: Vemos con un asterisco que la particion esta seleccionada
+
+* partition 1   100|260 MB      Sistema (arranque BIOS/EFI)
+  partition 2   16 MB           Reservado (MSR) (configuración de disco GPT)
+  partition 3   20GB            Principal (Windows)
+  partition 4   500 MB          Recuperación (Recovery)
+
+
+Volumenes
+
+list volume                        :: Listar volumenes
+
+           Ltr  FS
+ volumen 0    
+ volumen 1   C   ntfs      20 GB
+ volumen 2       fat32     100MB   oculto
+ volumen 3       ntfs      500MB
+
+select volume <n>                  :: Seleccionar un volumen por su numero
+
+list volume                        :: Listar volumenes
+
+           Ltr  FS
+  volumen 0    
+  volumen 1   C   ntfs      20 GB
+* volumen 2       fat32     100MB   oculto
+  volumen 3       ntfs      500MB
+
+
+Formateos
+
+format quick fs=fat32 label="system"      :: Formatea la particion en fat32 o ntfs
+
+assign letter=L                           :: Asigna una letra a la particion para el volumen
+
+list volume                               :: Listar volumenes
+
+           Ltr  FS
+  volumen 0    
+  volumen 1   C   ntfs      20 GB
+* volumen 2   L   fat32     100MB   oculto
+  volumen 3       ntfs      500MB
+
+active                                    :: Marcar la particion como activa para que reconozca como particion de arranque
+
+exit                                      :: Salir de diskpart
+
+
+Si no existe particion de arranque entonces hay que crearla
+
+
+list partition                      :: Vemos con un asterisco que la particion esta seleccionada
+
+
+  partition 1   16 MB           Reservado (MSR) (configuración de disco GPT)
+  partition 2   20GB            Principal (Windows)
+  partition 3   500 MB          Recuperación (Recovery)
+
+
+select partition 2                  :: Seleccionamos la particion de mayor tamaño
+
+list partition                      :: Vemos con un asterisco que la particion esta seleccionada
+
+
+  partition 1   16 MB           Reservado (MSR) (configuración de disco GPT)
+* partition 2   20GB            Principal (Windows)
+  partition 3   500 MB          Recuperación (Recovery)
+
+
+shrink desired=100                 :: Reduce el tamaño de una particion seleccionada
+
+shrink minimum=size                :: Reduce el tamaño de una particion seleccionada
+
+create partition efi size=100
+
+active                                    :: Marcar la particion como activa para que reconozca como particion de arranque
+
+exit                                      :: Salir de diskpart
+
+
+METODO 1
+
+bootrec /fixmbr       :: Reparar MBR dañado, no reescribe la tabla de particiones (No usar con GPT)
+
+bootrec /fixboot      :: Escribe un nuevo sector de arranque
+
+bootrec /scanos       :: Busca instalaciones de windows, muestra entradas que no estan BCD, utilizar cuando no hay entradas en el menú de arranque.
+
+bcdedit /export C:\BCD_Backup    :: Exporta el almacen bcd haciendo un backup en una ruta en este caso la unidad C:
+
+L:                               :: Letra de la partición de arranque
+
+cd boot                          :: Ingresar en el directorio boot del arranque
+
+attrib bcd -s -h -r              :: Aplica ciertos atributos al directorio del almacen bcd s (file system) h (file hidden) r (read-only file)
+
+ren bcd bcd.old                  :: Renombra el bcd como una copia vieja
+
+bootrec /RebuildBcd              :: Reconstruye un nuevo directorio bcd con sus archivos de configuracion
+
+
+METODO 2
+
+L:\>bootsect /nt60 all /force 
+
+
+METODO 3
+
+L:\>bcdboot c:\windows /s  L:  /f BIOS  ::
+L:\>bcdboot c:\windows /s  L:  /f UEFI  ::
+L:\>bcdboot c:\windows /s  L:  /f ALL   ::
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
