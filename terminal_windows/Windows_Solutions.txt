@@ -1,0 +1,72 @@
+﻿-----------REPARAR EL ARRANQUE DE WINDOWS EFI---------------
+
+:: Parición EFI
+
+diskpart
+
+list disk                                    	:: Listo todos los discos
+
+select disk              	 
+
+list volume                                	:: Listo todos los volumenes
+
+select volume                          	:: Selecciono el volumen mas chico el de arranque de 100 a 260Mb
+
+list partition                              	:: Si no existe la partición EFI
+
+select partition              	            :: Seleciono una particion del disco.
+
+shrink desiret=200 minimun=200       :: Le asigno un tamaño de 200Mb
+
+create partition efi size=100                :: Creo una particion nueva de 100Mb para el arranque
+
+list volume
+
+select volume
+
+assign letter Z
+
+format fs=fat32 quick
+
+exit
+
+bcdboot c:\windows /s Z: /f all
+
+
+-----------REPARAR EL ARRANQUE DE WINDOWS BOOT---------------
+
+:: Partición Boot
+
+sfc /scannow
+chkdsk c: /f /r
+
+bootrec /fixmbr
+bootrec /fixboot
+bootrec /rebuilbdc # presionar "s"
+
+bcdedit /export c:\bcdbackup
+cd boot
+attrib -h -r -s
+ren bcd bcd.old
+bootrec /rebuilbdc
+
+
+-------------DESACTIVAR EL ARRANQUE SEGURO-----------------------------------
+
+Desactivar el arranque seguro cuando no bootea el pendriver.
+
+Secure Boot [Enable] a [Disable]
+
+Si querés que la pc arranque para S.O antiguos
+
+Legacy Support [Disable] a [Enable]
+
+
+—--------------------------------SALTAR CONEXION A INTERNET EN W11 O CUENTA MICROSOFT---------------
+
+Shit F10
+
+1. taskmgr
+Finalizar proceso flujo de conexión red2
+
+2. oobe/bypassnro {desconectar eternet}

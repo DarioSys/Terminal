@@ -680,22 +680,37 @@ iptables -L INPUT -v -n         # Lista todas las reglas de entrada
 iptables -L OUTPUT -v -n        # Lista todas las reglas de salida
 iptables -S                     # Lista todas las reglas                
 
-# Eliminar reglas y contadores
-iptables -t filter -F  
-iptables -t nat -F     
-iptables -t filter -Z  
-iptables -t nat -Z     
+# Eliminar reglas 
 
-# Aceptar todas las reglas por defecto
+# Elimina reglas IPv4 - iptables
+iptables -t filter -F            # Elimina todas las reglas de la tabla filter
+iptables -t nat -F               # Elimina todas las reglas de la tabla nat
+iptables -t filter -Z            # Reinicia los contadores de la tabla filter
+iptables -t nat -Z               # Reinicia los contadores de la tabla nat
+iptables -t mangle -F            # Elimina todas las reglas de la tabla mangle
+iptables -t mangle -X            # Elimina todas las cadenas personalizadas de mangle
+iptables -t filter -X            # Elimina todas las cadenas personalizadas de filter
+iptables -t raw -F
+iptables -t raw -X
 
-iptables -P INPUT ACCEPT        # Acepta todo el trafico entrante
-iptables -P OUTPUT ACCEPT       # Acepta todo el trafico saliente
-iptables -P FORWARD ACCEPT      # Acepta todo el reenvio de trafico a otro dispositivo
+# Elimina reglas IPv6 - ip6tables
+ip6tables -t filter -F          # Elimina todas las reglas de la tabla filter
+ip6tables -t filter -Z          # Reinicia los contadores de la tabla filter
+ip6tables -t mangle -F          # Elimina todas las reglas de la tabla mangle
+ip6tables -t mangle -X          # Elimina todas las cadenas personalizadas de mangle
+ip6tables -t filter -X          # Elimina todas las cadenas personalizadas de filter
+ip6tables -t raw -F
+ip6tables -t raw -X
 
 # Denegar todas las reglas por defecto
-iptables -P INPUT DROP          # Bloquea todo el trafico entrante
-iptables -P OUTPUT DROP         # Bloquea todo el trafico saliente
-iptables -P FORWARD DROP        # Bloquea todo el reenvio de trafico a otro dispositivo
+iptables -P INPUT DROP    
+iptables -P OUTPUT DROP   
+iptables -P FORWARD DROP  
+
+# Denegar todas las reglas por defecto
+ip6tables -P INPUT DROP    
+ip6tables -P OUTPUT DROP   
+ip6tables -P FORWARD DROP  
 
 
 # Regla en la cadena input y output para aceptar conexiones
@@ -739,6 +754,7 @@ iptables -t filter -A INPUT -p tcp -d [ip_servidor_web] --dport 80 -j ACCEPT
 iptables -A OUTPUT -p tcp --sport 1024:65535 -j ACCEPT
 
 # Permitir tráfico Relacionado y establecido
+# En este caso agregamos conexiones relacionadas y establecidas para no abrir un puerto de entrada
 iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
 
 # Cuarda los cambios de la regla
@@ -749,28 +765,31 @@ netfilter-persistent save
 
 # --------------------------------------------------------------------------------------
 
+# Habilitar ICMP
+iptables -A OUTPUT -p icmp -j ACCEPT 
+iptables -A INPUT  -p icmp -j ACCEPT 
+
+# Habilitar resolución DNS
+iptables -A OUTPUT -p udp --dport 53 -j ACCEPT
+iptables -A INPUT  -p udp --sport 53 -m state --state ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 53 -j ACCEPT
+iptables -A INPUT  -p tcp --sport 53 -m state --state ESTABLISHED -j ACCEPT
+
 # Habilitar interfaz loopback 
 iptables -I INPUT 1 -i lo -j ACCEPT
 iptables -I OUTPUT 1 -o lo -j ACCEPT
 
-# Habilitar ICMP
-iptables -A OUTPUT -o [interfaz] -p icmp -j ACCEPT 
-iptables -A INPUT -i  [interfaz] -p icmp -j ACCEPT 
-
-# Habilitar resolución DNS
-iptables -A OUTPUT -o [interfaz] -p udp --dport 53 -j ACCEPT
-iptables -A INPUT -i  [interfaz] -p udp --sport 53 -j ACCEPT
-
-iptables -A OUTPUT -o [interfaz] -p tcp --dport 53 -j ACCEPT
-iptables -A INPUT -i  [interfaz] -p tcp --sport 53 -j ACCEPT
-
 # Tráfico HTTP 
-iptables -A OUTPUT -o [interfaz] -p tcp --dport 80 -j ACCEPT
-iptables -A INPUT -i  [interfaz] -p tcp --sport 80 -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 80 -j ACCEPT
+iptables -A INPUT  -p tcp --sport 80 -m state --state ESTABLISHED -j ACCEPT
 
 # Tráfico HTTPS 
-iptables -A OUTPUT -o [interfaz] -p tcp --dport 443 -j ACCEPT
-iptables -A INPUT -i  [interfaz] -p tcp --sport 443 -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 443 -j ACCEPT
+iptables -A INPUT  -p tcp --sport 443 -m state --state ESTABLISHED -j ACCEPT
+
+# Permitir tráfico SSH
+iptables -A INPUT   -p tcp --dport 22 -j ACCEPT
+iptables -A OUTPUT  -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT
 
 # ----------------------------------------------------------------------------------------
 
@@ -810,34 +829,55 @@ dhclient -r <interfaz>                                   # Libera y renueva la d
 
 ip addr                                                  # Ver las las conf de red , adaptadores ips, netmask
 
-ip link show                                             # lista todos los adaptadores
+ip addr show <adaptador>                                
+
+ip addr add  <IP>/<mask> dev <adaptador>                 # Añadir IP Netmask Broadcast
+
+ip addr del  <IP>/<mask> dev <adaptador>                 # Eliminar IP Netmask Broadcast
+
+ip addr flush dev <interfaz>                             # Elimina las configuraciones de red
+
 
 ip route                                                 # Muestra la tabla de enrutamiento 
-
-ip addr add  <IP> <netmask> <broadcast> dev <adaptador>  # Añadir IP Netmask Broadcast
 
 ip route add default via <gateway>                       # Añadir puerta de enlace 
 
 ip route add <red>/<mask> via <gateway> dev <interfaz>   # Añadir una ruta a la tabla de enrutamiento
 
 
-ip addr flush dev <interfaz>                            # Elimina las configuraciones de red
+ip link show                                            # lista todos los adaptadores
 
 ip link set <interfaz>  {up | down}                     # Prender o apagar el adaptador
 
 ip link set <interfaz> {disable | enable}               # Deshabilita, habilita el adaptador
 
+ip link set mtu <valor> <interfaz>                      # Modificar MTU
+
+ip link del dev <interfaz>                              # Elimina un adapatador
+
 
 ip tuntap add mode tun tun0                              # Crear un adaptador virtual
 
-ip add addr <IP> <netmask> dev tun0                      # Asignar una ip al adaptador virtual
+ip addr add <IP>/<mask> dev tun0                         # Asignar una ip al adaptador virtual
 
-ip link set tun0 up                                      # Levantar el adaptador virtual
-
-
-ip link set tun0 down                                    # Apagar el adaptador virtual
+ip link set tun0 {up | down}                             # Prender o apagar el adaptador
 
 ip tuntap del dev tun0                                   # Eliminar el adaptador virtual
+
+
+ip link add name br0 type bridge                          # Añadir un adaptador virtual en modo puente
+
+ip addr add <IP>/<mask> dev br0                           # Asigno una ip al adaptador virutal br0
+
+ip link set dev br0 {up | down}                           # Prender o apagar el adaptador
+
+ip link set dev <interfaz> master br0                     # Añadir interfaz física al puente
+
+
+
+ifconfig <interfaz> <IP> <netmask> <broadcast>          # Añadir IP Netmask Broadcast
+
+ifconfig <interfaz> {up | down}                         # Prender o apagar el adaptador
 
 
 route -n                                                 # Muestra la tabla de enrutamiento
@@ -845,13 +885,6 @@ route -n                                                 # Muestra la tabla de e
 route add default gw <gateway>                           # Añadir puerta de enlace 
 
 route add -net <red> netmask <mask> gw <gateway> dev <interfaz>  # Añadir una ruta a la tabla de enrutamiento
-
-
-ifconfig <interfaz> <IP> <netmask> <broadcast>          # Añadir IP Netmask Broadcast
-
-ifconfig <interfaz> {up | down}                         # Prender o apagar el adaptador
-
-ifconfig <interfaz> {disable | enable}                  # Deshabilita, habilita el adaptador
 
 
 nmcli device                                             # Muestra todos los adaptadores 

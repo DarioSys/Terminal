@@ -1,0 +1,94 @@
+Códecs de Video + Formatos Compatibles + Licencia + Resoluciones
+
+| Códec de Video       | Contenedores compatibles                             | Licencia                                | Resoluciones comunes                  |
+|----------------------|------------------------------------------------------|-----------------------------------------|---------------------------------------|
+| H.264 / AVC          | .mp4, .mkv, .mov, .avi, .flv                         | Licencia comercial (MPEG LA)           | Desde SD hasta 8K (360p, 480p, 720p, 1080p, 4K, 8K) |
+| H.265 / HEVC         | .mp4, .mkv, .mov                                     | Propietario (MPEG LA)                  | Desde SD hasta 8K (360p, 480p, 720p, 1080p, 4K, 8K) |
+| AV1                  | .mkv, .webm, .mp4 (experimental)                      | Libre / Open Source (AOM)              | Desde 720p hasta 8K (720p, 1080p, 4K, 8K) |
+| VP8                  | .webm, .mkv                                          | Libre (Google, BSD License)            | Desde 360p hasta 4K (360p, 480p, 720p, 1080p, 4K) |
+| VP9                  | .webm, .mkv                                          | Libre (Google, BSD License)            | Desde 360p hasta 8K (360p, 480p, 720p, 1080p, 4K, 8K) |
+| MPEG-4 Part 2        | .avi, .mp4, .mkv                                     | Licencia comercial                     | Desde 240p hasta 1080p (360p, 480p, 720p, 1080p) |
+| DivX                 | .avi, .mp4                                           | Propietario                            | Desde 360p hasta 1080p (480p, 720p, 1080p) |
+| Xvid                 | .avi, .mp4, .mkv                                     | Libre / Open Source                    | Desde 360p hasta 1080p (480p, 720p, 1080p) |
+| ProRes               | .mov                                                 | Propietario (Apple)                    | Desde 720p hasta 8K (1080p, 2K, 4K, 6K, 8K) |
+| ProRes RAW           | .mov                                                 | Propietario (Apple)                    | Hasta 8K (4K, 1080p, 2K, 6K, 8K) |
+| AVC-Intra            | .mov, .mxf                                           | Propietario (Panasonic)                | Hasta 4K (1080p, 2K, 4K)              |
+| Theora               | .ogv, .mkv                                           | Libre / Open Source (Xiph.org)         | Desde 360p hasta 1080p (480p, 720p, 1080p) |
+| WMV (VC-1)           | .wmv, .asf, .avi                                     | Propietario (Microsoft)                | Desde 480p hasta 1080p (720p, 1080p) |
+| RealVideo (RV)       | .rm, .rmvb                                           | Propietario (RealNetworks)             | Desde 360p hasta 720p (480p, 720p) |
+
+---
+
+Códecs de Audio + Formatos Compatibles + Licencia
+
+| Códec de Audio       | Contenedores compatibles                             | Licencia                                | Resolución / Frecuencia de muestra común |
+|----------------------|------------------------------------------------------|-----------------------------------------|------------------------------------------|
+| AAC                  | .mp4, .mkv, .mov, .m4a                               | Licencia comercial (Fraunhofer, etc.)  | Hasta 48 kHz (común en 44.1 kHz)        |
+| MP3                  | .mp3, .mp4, .mkv, .avi                               | Libre desde 2017, previamente con licencia | Hasta 48 kHz                           |
+| Opus                 | .webm, .mkv, .ogg                                    | Libre / Open Source (IETF, Xiph)       | Hasta 48 kHz                           |
+| Vorbis               | .ogg, .webm, .mkv                                    | Libre / Open Source (Xiph.org)         | Hasta 48 kHz                           |
+| FLAC                 | .flac, .mkv, .ogg                                    | Libre / Open Source                    | Hasta 192 kHz (24-bit)                 |
+| ALAC                 | .m4a, .mov                                           | Libre (Apple lo liberó)                | Hasta 48 kHz                           |
+| PCM / WAV            | .wav, .avi, .mov                                     | Libre (sin compresión)                 | Hasta 192 kHz (24-bit)                 |
+| AC3                  | .mkv, .mp4, .avi, .ts                                | Propietario (Dolby)                    | Hasta 48 kHz                           |
+| EAC3                 | .mkv, .mp4, .ts, .mov                                | Propietario (Dolby)                    | Hasta 48 kHz                           |
+| DTS                  | .mkv, .ts, .avi                                      | Propietario (DTS Inc.)                 | Hasta 192 kHz (24-bit)                 |
+| WMA                  | .wma, .asf, .avi                                     | Propietario (Microsoft)                | Hasta 48 kHz                           |
+| RealAudio (RA)       | .ra, .rm, .rmvb                                      | Propietario (RealNetworks)             | Hasta 48 kHz                           |
+| Dolby TrueHD         | .mkv, .ts                                            | Propietario (Dolby)                    | Hasta 192 kHz (24-bit)                 |
+| DTS-HD Master Audio  | .mkv, .ts                                            | Propietario (DTS)                      | Hasta 192 kHz (24-bit)                 |
+
+---
+
+
+yt-dlp [options] <URL>
+
+-F                                                       # Lista todos los videos
+-f                                                       # Descarga el video
+-f ID "ID+ID"                                            # Selecciona por ID
+-f "bestvideo+bestaudio"                                 # Elije la mejor calidad de video y audio sin importar el formato y codec
+--merge-output-format {mp4 | mkv}                        # Une el video, audio descargado y lo fusiona en un formato de salida
+-f "bestvideo[vcodec^=codec]+bestaudio[acodec^=codec]"   # Busca por codec de video o audio
+-f -c                                                    # Continua la descarga si se cancelo
+
+--cookies-from-browser firefox                           # Usar las cookies del navegador para permitir la descarga
+
+--yes-playlist 
+
+--playlist-start 1 --playlist-end 10 
+
+--playlist-reverse --playlist-end 20
+
+--extract-audio --audio-format mp3 
+
+--write-subs --sub-langs en,es 
+
+
+
+yt-dlp -f "bestvideo[vcodec^=avc1]+bestaudio[acodec^=opus]" --merge-output-format mp4                            mkv   1080  video = Muy Bueno - Audio = exelente
+
+yt-dlp -f "bestvideo[vcodec^=avc1]+bestaudio[acodec^=mp4a]"                                                      mp4   1080  video = Muy Bueno - Audio = Muy Bueno
+
+yt-dlp -f "bestvideo[vcodec^=vp09]+bestaudio[acodec^=mp4a]"                                                      mp4    4k   video = exelente - Audio = Muy Bueno
+
+yt-dlp -f "bestvideo[vcodec^=vp09]+bestaudio[acodec^=opus]" --merge-output-format mp4                            web    4k   video = exelente - Audio = Exelente   
+
+
+
+avc1   1280x720   mp4a
+vp09   1280x720   opus
+#av01  1280x720                      
+
+avc1   1920x1080  mp4a
+vp09   1920x1080  opus
+#av01  1920x1080  opus               
+
+vp09    2560x1440 opus
+#av01   2560x1440                  
+
+https://www.youtube.com/watch?v=TaYC6_5A9AU
+
+yt-dlp -f "bestvideo[vcodec^=avc1]+bestaudio[acodec^=mp4a]" --cookies-from-browser firefox "https://www.youtube.com/watch?v=sREANcb8H1Q&list=PLWys0ZbXYUy4x2gR3LFDa0bZw4OZ1m8k-"
+
+
+

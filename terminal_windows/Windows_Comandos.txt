@@ -1,0 +1,213 @@
+﻿COMANDOS CMD WINDOWS
+ fecha: 20/07/2023
+
+
+—-----------------------------------ADMINISTRACIÓN DEL SISTEMA-----------------------------------
+
+date  [/parámetro] :: Muestra la fecha del sistema y pide modificar
+/T Para no modificar  
+
+time  [/parámetro] :: Muestra la hora del sistema y pide modificar
+/T Para no modificar 
+
+ver :: Muestra la versión de Windows.
+
+systeminfo :: Muestra las propiedades y la configuración específicas del equipo.
+
+whoami [/parámetro] :: Muestra el usuario y propiedades del equipo
+
+hostname :: Muestra el nombre del host actual.
+
+shutdown [/parámetro] :: Apagado y reinicio del equipo
+/L Cierra sesión.
+/S Apaga el equipo en menos 1min con una ventana de aviso
+/R Reinicia el equipo en menos 1min con una ventana de aviso
+/A Anula el apagado
+/P Apaga el equipo sin advertencias
+/T Pone un tiempo
+/F Fuerza el cierre de Apps
+/C Para poner un mensaje.
+/H Suspende el equipo
+
+| findstr :: Filtrar
+
+tasklist [/parámetro] :: Muestra los procesos 
+/SVC Muestra la lista de procesos junto con los servicios que están ejecutando.
+
+taskkill [/parámetro] :: Mata un proceso.
+/PID       Se pone el número del pid que desea matar.
+/IM        Para matar el proceso por su nombre
+/F          Para forzar.
+
+path :: Muestra o establece una ruta de búsqueda para archivos ejecutables.
+
+exit :: Salir de la ventana del cmd
+
+start :: Inicia un programa.
+
+title :: Cambia el titulo de la ventana del cmd
+
+color :: Cambia el color del texto
+
+
+—-------------------------------------GESTIÓN DE ARCHIVOS Y CARPETAS----------------------------
+
+cd  :: Muestra donde estamos ubicado mostrando la ruta absoluta y nos permite navegar entre directorios
+
+cd..  :: Nos permite ir a un directorio anterior.    
+
+cd /d   [driver:][path]    :: Nos permite ir a otra unidad y ruta.
+
+dir  [/parámetro][A:/atributos] [driver:][path]  :: Lista directorios
+/A : H  Muestra los directorios ocultos
+/A : S  Muestra archivos del sistema
+     
+cls   :: Limpia la pantalla
+
+copy [/parámetro] Origen[driver:][path][file]  Destino[driver:][path] :: Copia Archivos
+/-Y Pide confirmación si hay archivos existentes.
+
+xcopy [/parámetro] Origen[driver:][path][file]  Destino[driver:][path] :: Copia Archivos y directorios
+/P Pide confirmación antes de copiar.
+/E Copia todo incluyendo directorios vacíos.
+/S Copia sin incluir directorios vacíos.
+
+robocopy [/parámetro] Origen[driver:][path][file]  Destino[driver:][path]  :: Copia Archivos y directorios
+/P Pide confirmación antes de copiar.
+/E Copia todo incluyendo directorios vacíos.
+/S Copia sin incluir directorios vacíos.
+
+move [/parámetro] Origen[driver:][path][file] Destino[driver:][path] :: Renombra y mueve directorios
+/-Y Pide confirmación si hay archivos existentes
+
+ren , rename [driver:][path][file1] [file2] :: Renombra un archivo
+
+del, erase [/parámetro][A:/atributos] [driver:][path][file] :: Elimina archivos
+/P        Pide confirmación antes de eliminar
+/Q       No pide confirmación antes de eliminar
+/S        Elimina todos los archivos de subdirectorios
+/F        Fuerza la eliminación de solo lectura.
+/A: R   Elimina archivos de solo lectura
+/A: H   Elimina archivos ocultos
+
+rd, rmdir [/parámetro][driver:][path] :: Elimina, archivos y directorios.
+/S Elimina todo los directorios y subdirectorios.
+/Q No pide confirmación.
+
+md, mkdir [driver:][path] :: Crea directorios.
+
+Copy con Archivo.txt      :: Crea un archivo de texto plano con texto.
+
+echo :: Imprime un mensaje por consola
+
+echo [texto] > Archivo.txt :: Crea un archivo de texto plano con texto.
+
+type [driver:][path][file] :: Muestra el contenido de archivos de texto
+
+tree [/parámetro][driver:][path] :: Muestra un árbol del directorio.
+/F Muestra los archivos de cada carpeta.
+
+attrib [signo Letra][driver:][path][file] :: Modifica los atributos de archivos y directorios.
++   Establece un atributo.
+-   Borra un atributo.
+R   Atributo de archivo de solo lectura.
+A   Atributo de archivo de almacenamiento.
+S   Atributo de archivo del sistema.
+H   Atributo de archivo oculto.
+
+attrib -r -a -h -s /s /d *.*   :: Mostrar archivos ocultos por virus
+
+—-------------------------------------GESTIÓN DE DISCOS Y ALMACENAMIENTO-------------------
+
+vol [driver:] :: Muestra el volumen de la unidad y su número de serie
+
+diskpart :: Herramienta de unidades de disco.
+list    disk, volume, partition               Lista los discos, volúmenes y particiones
+select  disk, volume, partition            Selecciona los discos, volúmenes y particiones
+shrink desiret=size  minimun=size    Reduce el tamaño de un volumen.
+create partition efi size=100               Crea una partición nueva de 100Mb para el arranque
+assign letter x                                       Asigna una letra al volumen.
+format fs=fat32 quick                           Da formato rápido a un volumen.   
+
+sfc /scannow :: Escanea y repara archivos de sistema corruptos en Windows.
+
+chkdsk
+
+
+—-------------------------------------GESTIÓN DE USUARIOS Y CUENTAS-----------------------------
+
+
+—-------------------------------------REDES Y CONECTIVIDAD---------------------------------------------
+
+ping [ip]
+
+pathping -4 [ip]  ::
+
+tracert [ip]    :: 
+
+nslookup [ip] :: Consultar servidores de nombres de dominio (DNS)
+
+ipconfig [ip] [/parámetro]
+/all         	Muestra toda la información de configuración.
+/release     	Libera la dirección IPv4 actualmente asignada por DHCP.
+/release6    	Libera la dirección IPv6 actualmente asignada por DHCP.
+/renew       	Renueva la dirección IPv4 obtenida a través de DHCP.                	
+/renew6      	Renueva la dirección IPv6 obtenida a través de DHCP.   
+/displaydns    Muestra la caché DNS             	
+/flushdns    	Limpia la memoria caché de resolución DNS.
+
+getmac /v  :: Me permite ver la MAC del dispositivo
+
+netstat
+
+netsh wlan show wlanreport :: Me da un reporte de mi red
+
+netsh wlan show profile :: Me lista mis redes y me da información
+
+netsh wlan show profile "nombredelared" key=clear :: Obtener la password wifi.
+
+arp -a :: Para ver los equipos conectados a mi red
+
+net share :: Para ver los recursos compartidos de mi equipo
+
+
+# SSH
+ 
+# Para windows copiar la clave publica del cliente al servidor  C:\ProgramData\ssh> con este nombre
+
+administrators_authorized_keys si el usuario pertenece al grupo de administradores y ejecutar estos comandos.
+
+icacls administrators_authorized_keys /inheritance:r 
+
+icacls administrators_authorized_keys /grant administrators:f
+
+administrators_authorized_keys /grant *S-1-5-32-544:F (si no funciona administrators, usar este)
+
+icacls administrators_authorized_keys /grant system:f
+
+# Para Usuarios no administradores copiar la clave publica en  C:\Users\sala\.ssh> con este nombre authorized_keys
+
+
+—-------------------------------------SEGURIDAD----------------------------------------------------------------
+
+
+
+---------------------------COMANDOS DE WINDOWS---------------------------------------
+
+slmgr /dlv  	:: licencia de windows
+slmgr -dli
+------------------------------------------------------------------------------------
+bcdedit     	:: Para saber si es Bios o Uefi
+msinfo32
+
+-------------------------------------------------------------------------------------
+/Office16
+
+cscript ospp.vbs /dstatus       	:: Ver El estado de tu licencia de office.
+
+cscript ospp.vbs /unpkey:XXXXX. 	:: Quitar la clave del producto de office.
+
+---------------------------------------------------------------------------------------------------------------
+vs_Community.exe --layout E:\ruta\VS2022 -ComandoVisualEstudio :: Para descargarme todo el visual studio.
+
+
